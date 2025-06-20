@@ -51,7 +51,7 @@ void colisao_shot_enemy(Game *p_game){
 
 					p_game->shots[i].active = false; // "desativa o tiro"
 					p_game->enemies[j].life--;
-					enemy_dmg_visuals_update(&p_game->enemies[j]);
+					//enemy_dmg_visuals_update(&p_game->enemies[j]);
 
 					if(p_game->enemies[j].life <= 0){
 						p_game->enemies[j].active = false;

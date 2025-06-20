@@ -13,6 +13,7 @@
 // --- CONFIGURAÇÃO ---
 
 #define FPS      100.0f
+#define MAX_FRAMES_POR_ANIMAÇÃO 10
 
 // --- ESTADOS DO JOGO ---
 

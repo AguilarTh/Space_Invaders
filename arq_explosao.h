@@ -3,7 +3,6 @@
 
 #include <allegro5/allegro.h>
 #include "arq_config.h"
-#define MAX_FRAMES_POR_ANIMAÇÃO 10
 
 typedef struct Game Game;
 

@@ -100,7 +100,7 @@ int main(){
 	game.sprites.nave = al_load_bitmap("nave_sprite.png");
 	game.sprites.nave_life = al_load_bitmap("hearts.png");
 	game.sprites.shot = al_load_bitmap("shot_sprite.png");
-	game.sprites.enemy = al_load_bitmap("enemy_sprite.png");
+	game.sprites.enemy = al_load_bitmap("enemy_sprite_new.png");
 	game.sprites.enemy_shot = al_load_bitmap("enemy_shot_sprite.png");
 	game.sprites.background_jogo = al_load_bitmap("background_jogo.png");
 	game.sprites.explosao = al_load_bitmap("explosao.png");

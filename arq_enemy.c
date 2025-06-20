@@ -13,6 +13,15 @@ void initEnemy(Game *p_game){
 		p_game->enemies[i].active= true;
 		p_game->enemies[i].x_vel = 1;
 	    p_game->enemies[i].y_vel = ENEMY_H + 5; 
+		p_game->enemies->frame_atual = 0;
+		p_game->enemies->time_count = 0.0;
+
+		/*Detalhes da Animação
+        
+		p_game->enemies->frame_time = 0.5f;
+		p_game->enemies->total_frames = 2;
+        p_game->enemies->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
+        p_game->enemies->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};*/
 
 		// ----- TIPOS DE INIMIGOS -----
 
@@ -30,22 +39,34 @@ void initEnemy(Game *p_game){
 		
 		switch(p_game->enemies[i].type){
 			case NORMAL:
-			  p_game->enemies[i].score = 1;
-	          p_game->enemies[i].life = 1;
-	          p_game->enemies[i].sprite = p_game->sprites.enemy;
-			  break;
+			 	p_game->enemies[i].score = 1;
+	          	p_game->enemies[i].life = 1;
+	          	p_game->enemies[i].sprite = p_game->sprites.enemy;
+			  	p_game->enemies[i].total_frames = 2;
+			  	p_game->enemies[i].frame_time = 0.5f;
+			 	p_game->enemies->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
+        		p_game->enemies->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};
+			  	break;
 			
 			case RARE:
-			  p_game->enemies[i].score = 5;
-	          p_game->enemies[i].life = 1;
-	          p_game->enemies[i].sprite = p_game->sprites.enemy;
-			  break;
+			  	p_game->enemies[i].score = 5;
+	          	p_game->enemies[i].life = 1;
+	          	p_game->enemies[i].sprite = p_game->sprites.enemy;
+			 	p_game->enemies[i].total_frames = 2;
+			  	p_game->enemies[i].frame_time = 0.5f;
+			 	p_game->enemies->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
+        		p_game->enemies->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};
+			 	break;
 			
 			case LEGENDARY:
-			  p_game->enemies[i].score = 15;
-	          p_game->enemies[i].life = 1;
-	          p_game->enemies[i].sprite = p_game->sprites.enemy;
-			  break;
+			  	p_game->enemies[i].score = 15;
+	        	p_game->enemies[i].life = 1;
+	          	p_game->enemies[i].sprite = p_game->sprites.enemy;
+			  	p_game->enemies[i].total_frames = 2;
+			  	p_game->enemies[i].frame_time = 0.5f;
+			 	p_game->enemies->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
+        		p_game->enemies->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};
+			  	break;
 		}
 		
 		// DISPERSAR O INIMIGOS:
@@ -69,6 +90,21 @@ void draw_enemy(const Game *p_game){
 	for(int i=0; i<MAX_ENEMIES; i++){
 		if(p_game->enemies[i].active){
 
+			const enemy *e = &p_game->enemies[i];
+			AnimationFrameEnemy frame_info = e->frames[e->frame_atual];
+
+			// Centralizar o Desenho
+
+			float draw_x = e->x - (frame_info.sw / 2.0);
+            float draw_y = e->y - (frame_info.sh / 2.0);
+
+			al_draw_bitmap_region(e->sprite,
+                                  frame_info.sx, frame_info.sy,
+                                  frame_info.sw, frame_info.sh,
+                                  draw_x, draw_y,
+                                  0);
+								  
+			/*
 			float sprite_w = al_get_bitmap_width(p_game->sprites.enemy);
    			float sprite_h = al_get_bitmap_height(p_game->sprites.enemy);
 
@@ -76,13 +112,15 @@ void draw_enemy(const Game *p_game){
 			float new_sprite_h = ENEMY_H;
 
 			float draw_x = p_game->enemies[i].x - (new_sprite_w/ 2.0);   
-    		float draw_y = p_game->enemies[i].y - (new_sprite_h / 2.0);
+    		float draw_y = p_game->enemies[i].y - (new_sprite_h / 2.0); 
 
 			al_draw_scaled_bitmap(p_game->sprites.enemy, 0, 0, sprite_w, sprite_h, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
+			*/
 		}
 	}
 }
 
+// OLHAR SE ESSE CODIGO ESTÁ OTIMIZADO -> ACHO Q NAO
 void update_enemy(Game *p_game){  // MOVIMENTAÇÃO/COLISAO/SPEED INCREASE
 
 	bool wall_tracker = false; // colisao enemy-wall
@@ -105,16 +143,28 @@ void update_enemy(Game *p_game){  // MOVIMENTAÇÃO/COLISAO/SPEED INCREASE
 		for(int i=0; i<MAX_ENEMIES; i++){
 			if(p_game->enemies[i].active){
 				p_game->enemies[i].x_vel *= -1;
-				p_game->enemies[i].y += p_game->enemies[i].y_vel;
+				p_game->enemies[i].y += p_game->enemies[i].y_vel;				
 			}
 		}
 	}
 
+	// LOGICA ANIMAÇÃO/MOV:
+
 	for(int i=0; i<MAX_ENEMIES; i++){
 		if(p_game->enemies[i].active){
 			p_game->enemies[i].x += p_game->enemies[i].x_vel * veloc_atual;
+			p_game->enemies[i].time_count += 1.0 / FPS;
+
+			if(p_game->enemies[i].time_count >= p_game->enemies[i].frame_time){
+				p_game->enemies[i].time_count = 0; 	// Reseta o contador
+				p_game->enemies[i].frame_atual++;	// Avança para o próximo frame
+
+				if(p_game->enemies[i].frame_atual >= p_game->enemies[i].total_frames){
+					p_game->enemies[i].frame_atual = 0;
+				}
+			}
 		}
-	}	
+	}
 }
 
 int contar_inimigos_vivos(Game *p_game){  // RETORNA O NUM DE INIMIGOS VIVOS
@@ -128,7 +178,7 @@ int contar_inimigos_vivos(Game *p_game){  // RETORNA O NUM DE INIMIGOS VIVOS
 	return enemies_alive;
 }
 
-void enemy_dmg_visuals_update(enemy *p_enemy){ // RETORNO VISUAL DO DANO -> VAI SER PASSADA DENTRO DA COLISSAO, ENT NN USAR A STRUCT GLOBAL
+/* void enemy_dmg_visuals_update(enemy *p_enemy){ // RETORNO VISUAL DO DANO -> VAI SER PASSADA DENTRO DA COLISSAO, ENT NN USAR A STRUCT GLOBAL
 	
 	switch(p_enemy->type){
 		case RARE:
@@ -148,4 +198,4 @@ void enemy_dmg_visuals_update(enemy *p_enemy){ // RETORNO VISUAL DO DANO -> VAI 
 		  }
 		  break;
 	}
-}
+} */
