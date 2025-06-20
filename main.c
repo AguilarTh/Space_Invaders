@@ -67,10 +67,9 @@ int main(){
 		return -1;
 	}
 
-    game.display = init_display(); // tela
-    if (!game.display){
-        return -1;
-    }
+    if (!init_display(&game)) { 
+    	return -1;
+	}
 
     game.timer = al_create_timer(1.0 / FPS);
     if(!game.timer) {
@@ -83,17 +82,17 @@ int main(){
 	// ---- ARQUIVOS EXTERNOS --------
 
 	// -- FONTE --
-    ALLEGRO_FONT *font = al_load_ttf_font("arial.ttf", 32, 0);   
-	if(font == NULL) {
+    game.font = al_load_ttf_font("arial.ttf", 32, 0);   
+	if(game.font == NULL) {
 		fprintf(stderr, "font file does not exist or cannot be accessed!\n");
 		return -1;
 	} 
 
 	// -- PNG ---
-	ALLEGRO_BITMAP *background_menu = al_load_bitmap("background_menu.png");
-	if (!background_menu) {
+	game.sprites.background_menu = al_load_bitmap("background_menu.png");
+	if (!game.sprites.background_menu) {
 		fprintf(stderr, "Falha ao carregar a imagem 'background_menu.png'!\n");
-		al_destroy_font(font);
+		al_destroy_font(game.font);
 		al_destroy_display(game.display);
 		return -1;
 	}
@@ -134,30 +133,31 @@ int main(){
 	initObject(objects);
 	
 	int score = 0; 
-	int high_score= load_highscore(); // Carregar o Recorde Salvo
-
+	
 	*/
 
+	int high_score= load_highscore(); // Carregar o Recorde Salvo
+
 	reset_game(&game);
-	GameStates estado_atual = MENU;
+	GameStates estado_atual = JOGO_ATIVO;
 
     // --------------- loop principal ---------------
 
 	al_start_timer(game.timer); // Inicia o TIMER
-    while(estado_atual != SAIR){
+    while(game.estado_atual != SAIR){
 
         ALLEGRO_EVENT ev;
 		al_wait_for_event(game.event_queue, &ev); // espera um evento
 
 		if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) { // Fechar a tale
-			estado_atual = SAIR;
+			game.estado_atual = SAIR;
 		}
 
-		switch (estado_atual){
+		switch (game.estado_atual){
 
 			case MENU:
-			    process_menu_events(ev, &estado_atual);
-				draw_menu(font, background_menu);
+			    process_menu_events(ev, &game);
+				draw_menu(game.font, game.sprites.background_menu);
 
 				if(estado_atual == JOGO_ATIVO) {
                     reset_game(&game);
@@ -190,17 +190,17 @@ int main(){
 
 	// Verificação do HighScore
 
-	if (game.score > game.high_score){
+	if (game.score > high_score){
 		printf("NOVO RECORDE: %d\n", game.score);
-		save_highscore(&game);
+		save_highscore(game.score);
 	}
 
     // ROTINAS DE DESTRUIÇÃO -> boa pratica
 
 	al_destroy_bitmap(game.sprites.nave);
-	al_destroy_bitmap(background_menu);
+	al_destroy_bitmap(game.sprites.background_menu);
     al_destroy_timer(game.timer);
-	destroy_display(game.display);
+	destroy_display(&game);
 	al_destroy_event_queue(game.event_queue);
 
     return 0;

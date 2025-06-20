@@ -15,7 +15,7 @@ typedef struct{
 } shot;
 
 void initShot(Game *p_game);
-void draw_shot(Game *p_game);
+void draw_shot(const Game *p_game);
 void update_shot(Game *p_game);
 
 #endif

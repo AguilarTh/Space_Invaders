@@ -1,8 +1,6 @@
 #include "arq_colisoes.h"
 #include "arq_game.h"
 #include "arq_config.h"
-#include "arq_enemy_shot.h"
-#include "arq_nave.h"
 
 #include <stdio.h>
 

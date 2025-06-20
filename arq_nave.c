@@ -12,7 +12,7 @@ void initNave(Game *p_game){
 	p_game->nave.sprite = p_game->sprites.nave;
 }
 
-void draw_nave(Game *p_game){
+void draw_nave(const Game *p_game){
 	
 	int sprite_w = al_get_bitmap_width(p_game->sprites.nave);
     int sprite_h = al_get_bitmap_height(p_game->sprites.nave);

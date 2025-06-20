@@ -20,7 +20,7 @@ void initObject(Game *p_game){
     }
 }
 
-void draw_object(Game *p_game){
+void draw_object(const Game *p_game){
 
     for(int i=0; i<OBJECTS_NUMB; i++){
         if(p_game->objects[i].active){

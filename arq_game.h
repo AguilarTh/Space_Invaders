@@ -17,7 +17,7 @@ typedef struct {
     // ... adicione outros sprites aqui conforme for criando
 } GameSprites;
 
-typedef struct {
+typedef struct Game {
 
     // --- Componentes Principais do Allegro ---
 
@@ -26,6 +26,7 @@ typedef struct {
     ALLEGRO_EVENT_QUEUE *event_queue;
     ALLEGRO_FONT *font;
     GameSprites sprites;
+
     // --- Estado do Jogo ---
 
     GameStates estado_atual;
@@ -39,6 +40,12 @@ typedef struct {
     shot shots[MAX_SHOTS];
     enemyshot enemies_shots[MAX_ENEMIES_SHOTS];
     object objects[OBJECTS_NUMB];
+
+    // --- Dados da Tela ---
+
+    float scale;
+    float offset_x;
+    float offset_y;
 
 } Game;
 

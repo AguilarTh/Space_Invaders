@@ -3,8 +3,10 @@
 
 #include <allegro5/allegro.h>
 
-ALLEGRO_DISPLAY* init_display();  // CRIACAO DA TELA
-void destroy_display(ALLEGRO_DISPLAY *display); // DESTROICAO DA TELA
-void transform_mouse_coords(int *mouse_x, int *mouse_y); 
+typedef struct Game Game;
+
+bool init_display(Game *p_game);
+void destroy_display(Game *p_game);
+void transform_mouse_coords(const Game *p_game, int *mouse_x, int *mouse_y);
 
 #endif 

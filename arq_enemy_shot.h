@@ -3,7 +3,7 @@
 
 #include <allegro5/allegro.h>
 
-typedef Game Game;
+typedef struct Game Game;
 
 typedef struct{
     
@@ -15,7 +15,7 @@ typedef struct{
 
 void initEnemyShot(Game *p_game);
 void try_enemy_shot(Game *p_game);
-void draw_enemy_shot(Game *p_game);
+void draw_enemy_shot(const Game *p_game);
 void update_enemy_shot(Game *p_game);
 
 #endif

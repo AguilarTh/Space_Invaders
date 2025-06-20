@@ -14,9 +14,9 @@ void initShot(Game *p_game){  // nao definir a loc do shot dentro dessa varialve
 	}
 }
 
-void draw_shot(Game *p_game){
+void draw_shot(const Game *p_game){
 
-	for(int i=0; i<MAX_ENEMIES; i++){
+	for(int i=0; i<MAX_SHOTS; i++){
 		if(p_game->shots[i].active){
 			al_draw_filled_rectangle(p_game->shots[i].x, p_game->shots[i].y, p_game->shots[i].x + SHOT_W, p_game->shots[i].y + SHOT_H, p_game->shots[i].cor);
 		}

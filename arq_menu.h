@@ -1,6 +1,8 @@
 #ifndef ARQ_MENU_H
 #define ARQ_MENU_H
 
+typedef struct Game Game;
+
 #include "arq_config.h"
 #include "arq_nave.h"
 #include "arq_enemy.h"
@@ -13,7 +15,7 @@
 #include <stdio.h>
 
 void draw_menu(ALLEGRO_FONT *font, ALLEGRO_BITMAP *background);
-void process_menu_events(ALLEGRO_EVENT ev, GameStates *estado_atual);
+void process_menu_events(ALLEGRO_EVENT ev, Game *p_game);
 void reset_game(Game *p_game);
 
 #endif 

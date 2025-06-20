@@ -1,10 +1,9 @@
 #ifndef ARQ_COLISOES_H
 #define ARQ_COLISOES_H
 
-#include "arq_enemy.h"
-#include "arq_shot.h"
-#include "arq_enemy_shot.h"
-#include "arq_nave.h"
+#include <stdbool.h>
+
+typedef struct Game Game;
 
 int colisao_enemy_solo(Game *p_game);
 void colisao_shot_enemy(Game *p_game);

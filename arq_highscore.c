@@ -1,7 +1,10 @@
-#include <stdio.h>
 #include "arq_highscore.h"
+#include "arq_game.h"
+#include <stdio.h>
 
 #define HIGHSCORE_FILE "highscore.dat"
+
+// !!!! MELHORIA -> CRIAR UMA TELA DE GAMEOVER E COLOCAR ESSA VERIFICACAO NELA
 
 int load_highscore() {
     FILE *file = fopen(HIGHSCORE_FILE, "r"); 

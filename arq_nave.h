@@ -4,7 +4,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro.h>
 
-typedef Game Game;
+typedef struct Game Game;
 
 typedef struct{
 
@@ -16,7 +16,7 @@ typedef struct{
 } nave;
 
 void initNave(Game *p_game);
-void draw_nave(Game *p_game);
+void draw_nave(const Game *p_game);
 void update_nave(Game *p_game);
 
 #endif 
