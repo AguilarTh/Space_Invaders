@@ -3,8 +3,6 @@
 #include "arq_config.h"
 
 #include <stdlib.h>
-#include <allegro5/allegro_primitives.h>
-
 
 void initEnemy(Game *p_game){
 	
@@ -34,26 +32,26 @@ void initEnemy(Game *p_game){
 			case NORMAL:
 			  p_game->enemies[i].score = 1;
 	          p_game->enemies[i].life = 1;
-	          p_game->enemies[i].cor = al_map_rgb( 58, 53, 41);
+	          p_game->enemies[i].sprite = p_game->sprites.enemy;
 			  break;
 			
 			case RARE:
 			  p_game->enemies[i].score = 5;
-	          p_game->enemies[i].life = 2;
-	          p_game->enemies[i].cor = al_map_rgb( 54, 33, 239);
+	          p_game->enemies[i].life = 1;
+	          p_game->enemies[i].sprite = p_game->sprites.enemy;
 			  break;
 			
 			case LEGENDARY:
 			  p_game->enemies[i].score = 15;
-	          p_game->enemies[i].life = 3;
-	          p_game->enemies[i].cor = al_map_rgb( 228, 171, 58);
+	          p_game->enemies[i].life = 1;
+	          p_game->enemies[i].sprite = p_game->sprites.enemy;
 			  break;
 		}
 		
 		// DISPERSAR O INIMIGOS:
 
 		p_game->enemies[i].x = (i % 5) * (ENEMY_W + 30) + 50; // o %5 cria um padrao q distribui os inimigos em 5 colunas
-	    p_game->enemies[i].y = ( i / 5) * (ENEMY_H + 30) + 20; // o /5 tambem cria um padrao q dividi em 2 linhas ( 0 e 1)
+	    p_game->enemies[i].y = ( i / 5) * (ENEMY_H + 30) + 80; // o /5 tambem cria um padrao q dividi em 2 linhas ( 0 e 1)
 		// o +20 é para o espaçamento entre inimigos e o +50/20 é para distanciar da margem
 		// se quiser q divida em "X" colunas -> %X
 	}
@@ -70,7 +68,17 @@ void draw_enemy(const Game *p_game){
 
 	for(int i=0; i<MAX_ENEMIES; i++){
 		if(p_game->enemies[i].active){
-				al_draw_filled_rectangle(p_game->enemies[i].x, p_game->enemies[i].y, p_game->enemies[i].x + ENEMY_W, p_game->enemies[i].y + ENEMY_H, p_game->enemies[i].cor);
+
+			float sprite_w = al_get_bitmap_width(p_game->sprites.enemy);
+   			float sprite_h = al_get_bitmap_height(p_game->sprites.enemy);
+
+			float new_sprite_w = ENEMY_W;
+			float new_sprite_h = ENEMY_H;
+
+			float draw_x = p_game->enemies[i].x - (new_sprite_w/ 2.0);   
+    		float draw_y = p_game->enemies[i].y - (new_sprite_h / 2.0);
+
+			al_draw_scaled_bitmap(p_game->sprites.enemy, 0, 0, sprite_w, sprite_h, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
 		}
 	}
 }
@@ -125,17 +133,17 @@ void enemy_dmg_visuals_update(enemy *p_enemy){ // RETORNO VISUAL DO DANO -> VAI 
 	switch(p_enemy->type){
 		case RARE:
 		  if(p_enemy->life == 1){
-			p_enemy->cor = al_map_rgb(196, 194, 210);
+			//p_enemy->cor = al_map_rgb(196, 194, 210);
 		  }
 		  break;
 
 		case LEGENDARY:
 		  switch(p_enemy->life){
 			case 2:
-			   	p_enemy->cor = al_map_rgb(181, 153, 96);
+			   	//p_enemy->cor = al_map_rgb(181, 153, 96);
                 break;
 			case 1:
-			    p_enemy->cor = al_map_rgb(195, 181, 154);
+			    //p_enemy->cor = al_map_rgb(195, 181, 154);
                 break;
 		  }
 		  break;

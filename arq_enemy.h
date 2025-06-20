@@ -2,6 +2,7 @@
 #define ARQ_ENEMY_H
 
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
 
 typedef struct Game Game;  // entender melhor sobre essa declaracao antecipada -> DECLARACAO VS DEFINICAO
 
@@ -13,7 +14,7 @@ typedef struct{
 	int life;
 	float x, y;
 	float x_vel, y_vel;
-	ALLEGRO_COLOR cor;
+	ALLEGRO_BITMAP *sprite;
 } enemy;
 
 void initEnemy(Game *p_game);

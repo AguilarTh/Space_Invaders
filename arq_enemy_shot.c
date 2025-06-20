@@ -9,6 +9,7 @@
 void initEnemyShot(Game *p_game){  // INICIALIZA TODOS COMO FALSE A PRIORI
     
     for(int i=0; i<MAX_ENEMIES_SHOTS; i++){
+        p_game->enemies_shots[i].sprite = p_game->sprites.enemy_shot;
         p_game->enemies_shots[i].active = false;
     }
 }
@@ -35,7 +36,17 @@ void try_enemy_shot(Game *p_game){  // % DE DISPARO
 void draw_enemy_shot(const Game *p_game){
     for(int i=0; i<MAX_ENEMIES_SHOTS; i++){
         if(p_game->enemies_shots[i].active){
-            al_draw_filled_rectangle(p_game->enemies_shots[i].x, p_game->enemies_shots[i].y, p_game->enemies_shots[i].x + SHOT_W, p_game->enemies_shots[i].y + SHOT_H, al_map_rgb(255, 0, 0));
+            
+            float sprite_w = al_get_bitmap_width(p_game->sprites.enemy_shot);
+   			float sprite_h = al_get_bitmap_height(p_game->sprites.enemy_shot);
+
+			float new_sprite_w = SHOT_W;
+			float new_sprite_h = SHOT_H;
+
+			float draw_x = p_game->enemies_shots[i].x - (new_sprite_w/ 2.0);   
+    		float draw_y = p_game->enemies_shots[i].y - (new_sprite_h / 2.0);
+
+			al_draw_scaled_bitmap(p_game->sprites.enemy_shot, 0, 0, sprite_w, sprite_h, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
         }
     }
 }

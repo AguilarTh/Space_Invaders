@@ -74,6 +74,7 @@ void atualiza_logica_jogo(Game *p_game){
     
     try_enemy_shot(p_game);
     update_enemy_shot(p_game);
+    update_explosoes(p_game);
 
     // Verificações de Colisao
 
@@ -101,14 +102,16 @@ void atualiza_logica_jogo(Game *p_game){
 
 void desenha_cena_jogo(const Game *p_game){
     
-    draw_scenario();
+    draw_scenario(p_game);
     draw_nave(p_game);
     draw_enemy(p_game);
+    draw_explosoes(p_game);
     draw_object(p_game);
-
+    draw_nave_life(p_game);
+    
     draw_score(p_game);
     draw_high_score(p_game);
-    draw_shot(p_game);
+    draw_shots(p_game);
     draw_enemy_shot(p_game);
 
     al_flip_display();
@@ -116,12 +119,18 @@ void desenha_cena_jogo(const Game *p_game){
 
 // FUNÇÕES DE DESENHO AVULSO: ( Talvez fazer um arquivo separado depois )
 
-void draw_scenario(){
+void draw_scenario(const Game *p_game){
 
-	al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_clear_to_color(al_map_rgb(0, 0, 0)); // LIMPA A TELA
+
+    float bg_w = al_get_bitmap_width(p_game->sprites.background_jogo);
+    float bg_h = al_get_bitmap_height(p_game->sprites.background_jogo);
+
+    al_draw_scaled_bitmap(p_game->sprites.background_jogo, 0, 0, bg_w, bg_h, 0, 0, SCREEN_W, SCREEN_H, 0);
+	/*al_clear_to_color(al_map_rgb(0, 0, 0));
 	al_draw_filled_rectangle(0, SCREEN_H - FLOOR_H, 
 		                     SCREEN_W, SCREEN_H, 
-							 al_map_rgb(0, 245, 0));
+							 al_map_rgb(0, 245, 0)); */
 }
 
 void draw_score(const Game *p_game){

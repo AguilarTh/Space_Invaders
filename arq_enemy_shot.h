@@ -10,7 +10,7 @@ typedef struct{
     bool active;
     float x,y;
     float y_vel;
-    ALLEGRO_COLOR cor;
+    ALLEGRO_BITMAP *sprite;
 } enemyshot;
 
 void initEnemyShot(Game *p_game);

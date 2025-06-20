@@ -12,7 +12,7 @@ void processa_eventos_jogo(ALLEGRO_EVENT ev, Game *p_game);
 void atualiza_logica_jogo(Game *p_game);
 void desenha_cena_jogo(const Game *p_game);
 
-void draw_scenario();
+void draw_scenario(const Game *p_game);
 void draw_score(const Game *p_game);
 void draw_high_score(const Game *p_game);
 

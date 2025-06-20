@@ -12,16 +12,41 @@ void initNave(Game *p_game){
 	p_game->nave.sprite = p_game->sprites.nave;
 }
 
+void draw_nave_life(const Game *p_game){
+
+	//float sprite_w = al_get_bitmap_width(p_game->sprites.nave_life);
+   	//float sprite_h = al_get_bitmap_height(p_game->sprites.nave_life);
+
+	float new_sprite_w = UI_W;
+	float new_sprite_h = UI_H;
+
+	float draw_x = 10;
+	float draw_y = SCREEN_H - 50;
+
+	for(int i=0; i<p_game->nave.life; i++){
+		al_draw_scaled_bitmap(p_game->sprites.nave_life, 0, 1, 16, 15, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
+		draw_x += 50;
+	}
+}
 void draw_nave(const Game *p_game){
 	
-	int sprite_w = al_get_bitmap_width(p_game->sprites.nave);
-    int sprite_h = al_get_bitmap_height(p_game->sprites.nave);
+	// Dimensoes ORIGINAIS do png:
+	float sprite_w = al_get_bitmap_width(p_game->sprites.nave);
+    float sprite_h = al_get_bitmap_height(p_game->sprites.nave);
 
-	float y_base= SCREEN_H - FLOOR_H;
-	float draw_x = p_game->nave.x - (sprite_w / 2.0);
-    float draw_y = y_base - (sprite_h / 2.0);
+	// Definindo NOVAS DIMENSOES:
+	float new_sprite_w = NAVE_W;
+	float new_sprite_h = NAVE_H;
 
-	al_draw_bitmap(p_game->nave.sprite, draw_x, draw_y, 0); // DESENHA A IMAGEM TODA -> AL_DRAW_BITMAP_REGION é q desenha so uma parte
+	// Posição na tela:
+	float draw_x = p_game->nave.x - (new_sprite_w / 2.0);  // largura
+    float draw_y = (SCREEN_H - FLOOR_H) - (new_sprite_h / 2.0);  // altura
+
+	// Função de ESCALA:
+	// al_draw_scaled_bitmap(bitmap_fonte, sx, sy, sw, sh, dx, dy, dw, dh, flags)
+
+	al_draw_scaled_bitmap(p_game->nave.sprite, 0, 0, sprite_w, sprite_h, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
+	// DESENHA A IMAGEM TODA -> AL_DRAW_BITMAP_REGION é q desenha so uma parte
 }
 
 void update_nave(Game *p_game){  // CONTROLE ESQ/DIR

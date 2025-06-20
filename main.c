@@ -18,7 +18,7 @@
 #include "arq_jogo_funcoes_base.h"
 #include "arq_menu.h"
 #include "arq_display.h"
-
+#include "arq_explosao.h"
 
 int main(){
 
@@ -82,7 +82,7 @@ int main(){
 	// ---- ARQUIVOS EXTERNOS --------
 
 	// -- FONTE --
-    game.font = al_load_ttf_font("arial.ttf", 32, 0);   
+    game.font = al_load_ttf_font("font_space.ttf", 35, 0);   
 	if(game.font == NULL) {
 		fprintf(stderr, "font file does not exist or cannot be accessed!\n");
 		return -1;
@@ -98,6 +98,12 @@ int main(){
 	}
 
 	game.sprites.nave = al_load_bitmap("nave_sprite.png");
+	game.sprites.nave_life = al_load_bitmap("hearts.png");
+	game.sprites.shot = al_load_bitmap("shot_sprite.png");
+	game.sprites.enemy = al_load_bitmap("enemy_sprite.png");
+	game.sprites.enemy_shot = al_load_bitmap("enemy_shot_sprite.png");
+	game.sprites.background_jogo = al_load_bitmap("background_jogo.png");
+	game.sprites.explosao = al_load_bitmap("explosao.png");
 
 	// ------------------------
 
@@ -139,7 +145,7 @@ int main(){
 	int high_score= load_highscore(); // Carregar o Recorde Salvo
 
 	reset_game(&game);
-	GameStates estado_atual = JOGO_ATIVO;
+	game.estado_atual = MENU;
 
     // --------------- loop principal ---------------
 
@@ -151,15 +157,16 @@ int main(){
 
 		if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) { // Fechar a tale
 			game.estado_atual = SAIR;
+			break;
 		}
 
 		switch (game.estado_atual){
 
 			case MENU:
 			    process_menu_events(ev, &game);
-				draw_menu(game.font, game.sprites.background_menu);
+				draw_menu(&game);
 
-				if(estado_atual == JOGO_ATIVO) {
+				if(game.estado_atual == JOGO_ATIVO) {
                     reset_game(&game);
                 }
 				break;
@@ -183,8 +190,8 @@ int main(){
 			    // loga
 				break;	
 
-			case SAIR:
-			    break;
+			default:
+				break;
 		}
     }
 
@@ -197,8 +204,15 @@ int main(){
 
     // ROTINAS DE DESTRUIÇÃO -> boa pratica
 
+	al_destroy_bitmap(game.sprites.background_jogo);
 	al_destroy_bitmap(game.sprites.nave);
+	al_destroy_bitmap(game.sprites.shot);
+	al_destroy_bitmap(game.sprites.enemy);
+	al_destroy_bitmap(game.sprites.enemy_shot);
+	al_destroy_bitmap(game.sprites.nave_life);
+	al_destroy_bitmap(game.sprites.explosao);
 	al_destroy_bitmap(game.sprites.background_menu);
+	al_destroy_font(game.font);
     al_destroy_timer(game.timer);
 	destroy_display(&game);
 	al_destroy_event_queue(game.event_queue);

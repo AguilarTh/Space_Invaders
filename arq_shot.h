@@ -10,12 +10,12 @@ typedef struct{
 	bool active;
 	float x, y;
 	float y_vel;
-	ALLEGRO_COLOR cor;
+	ALLEGRO_BITMAP *sprite;
 	// int type_shot;
 } shot;
 
 void initShot(Game *p_game);
-void draw_shot(const Game *p_game);
+void draw_shots(const Game *p_game);
 void update_shot(Game *p_game);
 
 #endif

@@ -9,11 +9,18 @@
 #include "arq_shot.h"
 #include "arq_enemy_shot.h"
 #include "arq_object.h"
+#include "arq_explosao.h"
 
 typedef struct {
 
     ALLEGRO_BITMAP *nave;
+    ALLEGRO_BITMAP *nave_life;
+    ALLEGRO_BITMAP *shot;
+    ALLEGRO_BITMAP *enemy; 
+    ALLEGRO_BITMAP *enemy_shot;
+    ALLEGRO_BITMAP *explosao;
     ALLEGRO_BITMAP *background_menu;
+    ALLEGRO_BITMAP *background_jogo;
     // ... adicione outros sprites aqui conforme for criando
 } GameSprites;
 
@@ -40,6 +47,10 @@ typedef struct Game {
     shot shots[MAX_SHOTS];
     enemyshot enemies_shots[MAX_ENEMIES_SHOTS];
     object objects[OBJECTS_NUMB];
+
+    // --- ANIMAÇÕES ---
+
+    Explosao explosoes[MAX_EXPLOSOES];
 
     // --- Dados da Tela ---
 

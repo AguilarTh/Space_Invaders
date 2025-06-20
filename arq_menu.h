@@ -14,7 +14,7 @@ typedef struct Game Game;
 #include <allegro5/allegro_ttf.h>
 #include <stdio.h>
 
-void draw_menu(ALLEGRO_FONT *font, ALLEGRO_BITMAP *background);
+void draw_menu(const Game *p_game);
 void process_menu_events(ALLEGRO_EVENT ev, Game *p_game);
 void reset_game(Game *p_game);
 

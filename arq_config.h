@@ -3,10 +3,10 @@
 
 // --- DIMENSÕES TELA ---
 
-#define SCREEN_W 1920
-#define SCREEN_H 1080
-//#define SCREEN_W 224
-//#define SCREEN_H 256
+/*#define SCREEN_W 1920
+#define SCREEN_H 1080 */
+#define SCREEN_W 1280  // 16:9
+#define SCREEN_H 720
 
 #define FLOOR_H  60
 
@@ -27,8 +27,9 @@ typedef enum{
 // --- INIMIGOS/SHOTS ---
 
 #define MAX_ENEMIES 20
-#define MAX_ENEMIES_SHOTS 30
-#define ENEMIES_BASE_SPEED 3.0
+#define MAX_ENEMIES_SHOTS 50
+#define MAX_EXPLOSOES 20
+#define ENEMIES_BASE_SPEED 1.0
 #define ENEMIES_SPEED_INCREASE 0.5
 #define MAX_SHOTS 1
 
@@ -40,16 +41,19 @@ typedef enum{
 
 // --- DIMENSÕES ENTIDADES ---
 
-#define NAVE_W 50
-#define NAVE_H 25
+#define UI_W 40
+#define UI_H 40
 
-#define SHOT_W 10
-#define SHOT_H 15
+#define NAVE_W 80
+#define NAVE_H 50
 
-#define ENEMY_W 50
-#define ENEMY_H 25
+#define SHOT_W 30
+#define SHOT_H 40
 
-#define OBJECTS_NUMB 3
+#define ENEMY_W 60
+#define ENEMY_H 30
+
+#define OBJECTS_NUMB 0
 #define OBJECT_W 75
 #define OBJECT_H 75
 

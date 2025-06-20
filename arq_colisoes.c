@@ -56,6 +56,7 @@ void colisao_shot_enemy(Game *p_game){
 					if(p_game->enemies[j].life <= 0){
 						p_game->enemies[j].active = false;
 						(p_game->score) += p_game->enemies[j].score; 
+						ativar_explosao(p_game, p_game->enemies[j].x, p_game->enemies[j].y);
 					}
 
 					break; // se o tiro ja pegou 1 inimigo nn precisa olhar os outros

@@ -10,8 +10,8 @@
 
 bool init_display(Game *p_game){
     
-    // DEFINE O MODO DE TELA CHEIA EM JANELA 
-    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW); 
+    // !! DEFINE O MODO DE TELA CHEIA EM JANELA : !!
+    //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW); 
 
     // CRIACAO DA TELA COM BASE NA CONFIG DO GAME
     p_game->display = al_create_display(SCREEN_W, SCREEN_H);
@@ -20,7 +20,7 @@ bool init_display(Game *p_game){
         return false; 
     }
 
-    // --- ESCALA AUTOMATICA ---
+    /* --- ESCALA AUTOMATICA ---  NAO É NECESSARIO EM FULL SCREEN
     float display_w = al_get_display_width(p_game->display);
     float display_h = al_get_display_height(p_game->display);
 
@@ -34,7 +34,7 @@ bool init_display(Game *p_game){
     al_identity_transform(&transform);
     al_translate_transform(&transform, p_game->offset_x, p_game->offset_y);
     al_scale_transform(&transform, p_game->scale, p_game->scale);
-    al_use_transform(&transform);
+    al_use_transform(&transform);  */
     // --- Fim do Bloco  ---
 
     return true; 
