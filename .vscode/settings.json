@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "allegro_primitives.h": "c",
+        "allegro_ttf.h": "c",
+        "config.h": "c",
+        "shot.h": "c",
+        "arq_config.h": "c",
+        "arq_colisoes.h": "c",
+        "arq_shot.h": "c",
+        "allegro.h": "c",
+        "arq_shot_enemy.h": "c",
+        "arq_enemy.h": "c",
+        "stdlib.h": "c",
+        "arq_enemy_shot.h": "c",
+        "allegro_font.h": "c",
+        "stdio.h": "c",
+        "arq_jogo_funcoes_base.h": "c",
+        "allegro_image.h": "c",
+        "arq_nave.h": "c",
+        "time.h": "c"
+    }
+}
