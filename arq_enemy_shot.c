@@ -16,7 +16,12 @@ void initEnemyShot(Game *p_game){  // INICIALIZA TODOS COMO FALSE A PRIORI
 
 void try_enemy_shot(Game *p_game){  // % DE DISPARO
 
-    if(rand() % 150 == 0){  // chance de 1/200
+    int tiro_rng = 200 - (p_game->round_atual * 5);
+    if(tiro_rng<50){
+        tiro_rng = 50;
+    }
+
+    if(rand() % tiro_rng == 0){  // chance de tiro_rng
 
         int shooter_ind = rand() % MAX_ENEMIES;
         if(p_game->enemies[shooter_ind].active){

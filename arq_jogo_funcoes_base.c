@@ -70,6 +70,8 @@ void processa_eventos_jogo(ALLEGRO_EVENT ev, Game *p_game){
 
 void atualiza_logica_jogo(Game *p_game){
     
+    // FUNCOES DE UPDATE
+
     update_nave(p_game);  // !!!!! enderer direito pq nao usar o & !!!!!!
     update_enemy(p_game); // Nao usamos o FOR aq pois ele agora ja está presente dentre da função
     // Main + limpo ( tipo um sumarios ) e ajuda na centralizacao de logica, inimigos movem como um bloco
@@ -78,6 +80,28 @@ void atualiza_logica_jogo(Game *p_game){
     try_enemy_shot(p_game);
     update_enemy_shot(p_game);
     update_explosoes(p_game);
+    update_powerups(p_game);
+
+    // GERENCIAMENTO DOS BUFFS
+
+    if (p_game->tempo_buff_velocidade_restante > 0){
+        p_game->tempo_buff_velocidade_restante -= 1.0 / FPS;
+        p_game->nave.vel = NAVE_BASE_SPEED * 2; // Velocidade em dobro
+
+        if (p_game->tempo_buff_velocidade_restante <= 0) {
+            p_game->nave.vel = NAVE_BASE_SPEED; // Volta ao normal
+        }
+    }
+
+
+    if (p_game->tempo_buff_tiros_restante > 0){
+        p_game->tempo_buff_tiros_restante -= 1.0 / FPS;
+        p_game->max_shots_atual = MAX_SHOTS + 2; // +2 tiros
+
+        if (p_game->tempo_buff_tiros_restante <= 0) {
+            p_game->max_shots_atual = MAX_SHOTS; // Volta ao normal
+        }
+    }
 
     // Verificações de Colisao
 
@@ -87,9 +111,14 @@ void atualiza_logica_jogo(Game *p_game){
     }
 
     if(contar_inimigos_vivos(p_game) == 0){
-        p_game->estado_atual = MENU;
+        p_game->round_atual++;
+        p_game->score += 500;
+        new_round_object(p_game);
+        initEnemy(p_game); 
     }
 
+    colisao_enemy_object(p_game);
+    colisao_nave_powerup(p_game);
     colisao_enemy_shot_object(p_game);
     colisao_shot_object(p_game);
     colisao_shot_enemy(p_game);
@@ -116,11 +145,13 @@ void desenha_cena_jogo(const Game *p_game){
     draw_object(p_game);
     draw_nave_life(p_game);
     
+    draw_round(p_game);
     draw_score(p_game);
     draw_high_score(p_game);
     draw_shots(p_game);
     draw_enemy_shot(p_game);
     draw_object(p_game);
+    draw_powerups(p_game);
 
     al_flip_display();
 }
@@ -144,6 +175,11 @@ void draw_scenario(const Game *p_game){
 void draw_score(const Game *p_game){
 	
 	al_draw_textf(p_game->font, al_map_rgb(255, 255, 255), 10, 10, ALLEGRO_ALIGN_LEFT, "Score: %d", p_game->score);
+}
+
+void draw_round(const Game *p_game){
+
+    al_draw_textf(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 10, ALLEGRO_ALIGN_CENTRE, "%dº Round", p_game->round_atual);
 }
 
 void draw_high_score(const Game *p_game){

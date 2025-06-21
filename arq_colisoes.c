@@ -56,6 +56,7 @@ void colisao_shot_enemy(Game *p_game){
 					if(p_game->enemies[j].life <= 0){
 						p_game->enemies[j].active = false;
 						(p_game->score) += p_game->enemies[j].score; 
+						tentar_dropar_buff(p_game, &p_game->enemies[j]);
 						ativar_explosao(p_game, p_game->enemies[j].x, p_game->enemies[j].y);
 					}
 
@@ -115,7 +116,7 @@ void colisao_enemy_shot_object(Game *p_game){
 
 					if(check_collision_retangulo(
 						p_game->enemies_shots[i].x, p_game->enemies_shots[i].y, SHOT_W, SHOT_H,
-						p_game->objects[j].x, p_game->objects[j].y, ENEMY_W, ENEMY_H)
+						p_game->objects[j].x, p_game->objects[j].y, OBJECT_W, OBJECT_H)
 					){
 					
 						p_game->enemies_shots[i].active = false;
@@ -131,5 +132,46 @@ void colisao_enemy_shot_object(Game *p_game){
 				}
 			}
 		}
+	}
+}
+
+void colisao_enemy_object(Game *p_game){
+	for(int i=0; i<MAX_ENEMIES; i++){
+		if(p_game->enemies[i].active){
+			for(int j=0; j<OBJECTS_NUMB; j++){
+				if(p_game->objects[j].active){
+					if(check_collision_retangulo(
+						p_game->enemies[i].x, p_game->enemies[i].y, ENEMY_W, ENEMY_H,       // ENEMY
+						p_game->objects[j].x, p_game->objects[j].y, OBJECT_W, OBJECT_H)     // OBJECT
+					){
+						p_game->enemies[i].active = false;
+						ativar_explosao(p_game, p_game->enemies[j].x, p_game->enemies[j].y);
+						p_game->objects[j].active = false;
+						al_play_sample(p_game->audio.explosao_objeto, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+					}
+				}
+			}
+		}
+	}
+}
+
+void colisao_nave_powerup(Game *p_game){
+
+	for(int i=0; i<MAX_POWERUPS; i++){
+		if(p_game->powerups[i].active){
+			
+			float nave_hitbox_x = p_game->nave.x - NAVE_W / 2;
+            float nave_hitbox_y = SCREEN_H - FLOOR_H / 2 - NAVE_H;
+
+			if (check_collision_retangulo(   
+				    p_game->powerups[i].x, p_game->powerups[i].y, POWERUP_W, POWERUP_H,  // Ret 1: PowerUp
+                    nave_hitbox_x, nave_hitbox_y, NAVE_W, NAVE_H)                        // Ret 2: Nave
+			){
+
+				p_game->powerups[i].active = false; 
+        		aplicar_buff(p_game, p_game->powerups[i].tipo);
+		    }
+		}
+
 	}
 }

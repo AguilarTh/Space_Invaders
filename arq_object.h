@@ -16,5 +16,6 @@ typedef struct{
 void initObject(Game *p_game);
 void draw_object(const Game *p_game);
 void update_objects(Game *p_game);
+void new_round_object(Game *p_game);
 
 #endif 

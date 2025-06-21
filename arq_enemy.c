@@ -18,13 +18,6 @@ void initEnemy(Game *p_game){
 		p_game->enemies[i].sprite = p_game->sprites.enemy;
 		p_game->enemies[i].dmg_count_timer = 0.0f;
 
-		/*Detalhes da Animação
-        
-		p_game->enemies->frame_time = 0.5f;
-		p_game->enemies->total_frames = 2;
-        p_game->enemies->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
-        p_game->enemies->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};*/
-
 		// ----- TIPOS DE INIMIGOS -----
 
 		int roll = rand() % 10;
@@ -41,8 +34,8 @@ void initEnemy(Game *p_game){
 		
 		switch(p_game->enemies[i].type){
 			case NORMAL:
-			 	p_game->enemies[i].score = 5;
-	          	p_game->enemies[i].life = 1;
+			 	p_game->enemies[i].score = 5 *p_game->round_atual;
+	          	p_game->enemies[i].life = 1 + (p_game->round_atual / 4);
 			  	p_game->enemies[i].total_frames = 2;
 			  	p_game->enemies[i].frame_time = 0.5f;
 			 	p_game->enemies[i].frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=203, .sw=14, .sh=16};
@@ -50,8 +43,8 @@ void initEnemy(Game *p_game){
 			  	break;
 			
 			case RARE:
-			  	p_game->enemies[i].score = 25;
-	          	p_game->enemies[i].life = 2;
+			  	p_game->enemies[i].score = 25 *p_game->round_atual;
+	          	p_game->enemies[i].life = 2 + (p_game->round_atual / 5);
 			 	p_game->enemies[i].total_frames = 2;
 			  	p_game->enemies[i].frame_time = 0.5f;
 			 	p_game->enemies[i].frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
@@ -59,8 +52,8 @@ void initEnemy(Game *p_game){
 			 	break;
 			
 			case LEGENDARY:
-			  	p_game->enemies[i].score = 50;
-	        	p_game->enemies[i].life = 3;
+			  	p_game->enemies[i].score = 50 *p_game->round_atual;
+	        	p_game->enemies[i].life = 3 + (p_game->round_atual / 6);
 			  	p_game->enemies[i].total_frames = 2;
 			  	p_game->enemies[i].frame_time = 0.5f;
 			 	p_game->enemies[i].frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=223, .sw=14, .sh=16};
@@ -122,8 +115,10 @@ void draw_enemy(const Game *p_game){
 void update_enemy(Game *p_game){  // MOVIMENTAÇÃO/COLISAO/SPEED INCREASE
 
 	bool wall_tracker = false; // colisao enemy-wall
+
+	float bonus_velocidade_onda = (p_game->round_atual - 1) * 0.1f;
 	int enemies_dead = MAX_ENEMIES - contar_inimigos_vivos(p_game);
-	float veloc_atual = ENEMIES_BASE_SPEED + ( enemies_dead * ENEMIES_SPEED_INCREASE );
+	float veloc_atual = ENEMIES_BASE_SPEED + bonus_velocidade_onda + (enemies_dead * ENEMIES_SPEED_INCREASE);
 
 	for(int i=0; i<MAX_ENEMIES; i++){
 

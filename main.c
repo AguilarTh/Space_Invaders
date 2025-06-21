@@ -21,6 +21,7 @@
 #include "arq_menu.h"
 #include "arq_display.h"
 #include "arq_explosao.h"
+#include "arq_powerup.h"
 
 int main(){
 
@@ -125,6 +126,10 @@ int main(){
 	game.sprites.object_A = al_load_bitmap("object_um_A.png");
 	game.sprites.object_B = al_load_bitmap("object_um_B.png");
 	game.sprites.object_C = al_load_bitmap("object_um_C.png");
+	game.sprites.powerUp_Life = al_load_bitmap("powerUp_Life.png");
+	game.sprites.powerUp_Tiros = al_load_bitmap("powerUp_Tiros.png");
+	game.sprites.powerUp_Vel = al_load_bitmap("powerUp_Vel.png");
+	
 
 	// -- AUDIO --
 

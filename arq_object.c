@@ -44,7 +44,10 @@ void update_objects(Game *p_game){
     for(int i=0; i<OBJECTS_NUMB; i++){
 
         switch(p_game->objects[i].life){
-    
+            case 3:
+                p_game->objects[i].sprite = p_game->sprites.object_A;
+                break;
+
             case 2:
                 p_game->objects[i].sprite = p_game->sprites.object_B;
                 break;
@@ -54,5 +57,18 @@ void update_objects(Game *p_game){
                 break;
         }
     }
+}
 
+void new_round_object(Game *p_game){
+    int exp = rand() % (OBJECTS_NUMB - 1);
+    for(int i= 0; i<OBJECTS_NUMB; i++){
+        if(i == exp){
+            if(p_game->objects[i].active){
+                p_game->objects[i].life++;
+            }else{
+                p_game->objects[i].active = true;
+                p_game->objects[i].life = 1;
+            }
+        }
+    }
 }

@@ -15,5 +15,6 @@ void desenha_cena_jogo(const Game *p_game);
 void draw_scenario(const Game *p_game);
 void draw_score(const Game *p_game);
 void draw_high_score(const Game *p_game);
+void draw_round(const Game *p_game);
 
 #endif 

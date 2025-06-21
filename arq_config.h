@@ -25,6 +25,12 @@ typedef enum{
     SAIR
 } GameStates;
 
+typedef enum{
+    BUFF_VIDA,
+    BUFF_TIROS,
+    BUFF_VEL
+} BuffTypes;
+
 // --- INIMIGOS/SHOTS ---
 
 #define MAX_ENEMIES 20
@@ -32,7 +38,12 @@ typedef enum{
 #define MAX_EXPLOSOES 20
 #define ENEMIES_BASE_SPEED 1.0
 #define ENEMIES_SPEED_INCREASE 0.30
+
+// --- NAVE STATS ---
+
 #define MAX_SHOTS 1
+#define NAVE_BASE_SPEED 2
+#define MAX_POWERUPS 3 // maximo de powerups na tela
 
 typedef enum{
     NORMAL,
@@ -57,5 +68,8 @@ typedef enum{
 #define OBJECTS_NUMB 3
 #define OBJECT_W 100
 #define OBJECT_H 100
+
+#define POWERUP_W 40
+#define POWERUP_H 40
 
 #endif 

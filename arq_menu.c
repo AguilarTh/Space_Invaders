@@ -67,15 +67,18 @@ void process_menu_events(ALLEGRO_EVENT ev, Game *p_game){
 void reset_game(Game *p_game){
     printf("Resetando o estado do jogo...\n");
     initNave(p_game);
-    initEnemy(p_game);
     initShot(p_game);
     initObject(p_game);
     initEnemyShot(p_game);
     init_explosoes(p_game);
+    init_powerups(p_game);
 
     p_game->score = 0;
+    p_game->round_atual = 1;
 
-    // AUDIOS
+    initEnemy(p_game);
+
+    // AUDIOS DE FUNDO;
 
     al_set_audio_stream_playmode(p_game->audio.musica_fundo_jogo, ALLEGRO_PLAYMODE_LOOP);
     al_attach_audio_stream_to_mixer(p_game->audio.musica_fundo_jogo, al_get_default_mixer());

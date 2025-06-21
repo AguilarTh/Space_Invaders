@@ -12,6 +12,7 @@
 #include "arq_enemy_shot.h"
 #include "arq_object.h"
 #include "arq_explosao.h"
+#include "arq_powerup.h"
 
 typedef struct {
 
@@ -24,6 +25,10 @@ typedef struct {
     ALLEGRO_BITMAP *object_B;
     ALLEGRO_BITMAP *object_C;
     ALLEGRO_BITMAP *explosao;
+    ALLEGRO_BITMAP *powerUp_Life;
+    ALLEGRO_BITMAP *powerUp_Tiros;
+    ALLEGRO_BITMAP *powerUp_Vel;
+
     ALLEGRO_BITMAP *background_menu;
     ALLEGRO_BITMAP *background_jogo;
     // ... adicione outros sprites aqui conforme for criando
@@ -55,6 +60,7 @@ typedef struct Game {
     // --- Estado do Jogo ---
 
     GameStates estado_atual;
+    int round_atual;
     int score;
     int high_score;
 
@@ -65,6 +71,13 @@ typedef struct Game {
     shot shots[MAX_SHOTS];
     enemyshot enemies_shots[MAX_ENEMIES_SHOTS];
     object objects[OBJECTS_NUMB];
+    PowerUpDrop powerups[MAX_POWERUPS];
+
+    // --- CONTROLE DE BUFFS ---
+
+    float tempo_buff_velocidade_restante;
+    float tempo_buff_tiros_restante;
+    int max_shots_atual;
 
     // --- ANIMAÇÕES ---
 

@@ -6,7 +6,7 @@ void initNave(Game *p_game){
 
 	p_game->nave.life = 3;
 	p_game->nave.x = SCREEN_W /2;
-	p_game->nave.vel = 5;
+	p_game->nave.vel = 1;
 	p_game->nave.dir = 0;
 	p_game->nave.esq = 0;
 	p_game->nave.sprite = p_game->sprites.nave;
@@ -52,10 +52,10 @@ void draw_nave(const Game *p_game){
 void update_nave(Game *p_game){  // CONTROLE ESQ/DIR
 
 	if(p_game->nave.dir && ( p_game->nave.x + NAVE_W/2 ) + p_game->nave.vel <= SCREEN_W){
-		p_game->nave.x += p_game->nave.vel;
+		p_game->nave.x += p_game->nave.vel * NAVE_BASE_SPEED;
 	}
 	
 	if(p_game->nave.esq && ( p_game->nave.x - NAVE_W/2 ) - p_game->nave.vel >= 0){
-		p_game->nave.x -= p_game->nave.vel;
+		p_game->nave.x -= p_game->nave.vel * NAVE_BASE_SPEED;
 	}
 }
