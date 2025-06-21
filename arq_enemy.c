@@ -13,8 +13,10 @@ void initEnemy(Game *p_game){
 		p_game->enemies[i].active= true;
 		p_game->enemies[i].x_vel = 1;
 	    p_game->enemies[i].y_vel = ENEMY_H + 5; 
-		p_game->enemies->frame_atual = 0;
-		p_game->enemies->time_count = 0.0;
+		p_game->enemies[i].frame_atual = 0;
+		p_game->enemies[i].time_count = 0.0;
+		p_game->enemies[i].sprite = p_game->sprites.enemy;
+		p_game->enemies[i].dmg_count_timer = 0.0f;
 
 		/*Detalhes da Animação
         
@@ -39,33 +41,30 @@ void initEnemy(Game *p_game){
 		
 		switch(p_game->enemies[i].type){
 			case NORMAL:
-			 	p_game->enemies[i].score = 1;
+			 	p_game->enemies[i].score = 5;
 	          	p_game->enemies[i].life = 1;
-	          	p_game->enemies[i].sprite = p_game->sprites.enemy;
 			  	p_game->enemies[i].total_frames = 2;
 			  	p_game->enemies[i].frame_time = 0.5f;
-			 	p_game->enemies->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
-        		p_game->enemies->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};
+			 	p_game->enemies[i].frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=203, .sw=14, .sh=16};
+        		p_game->enemies[i].frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=203, .sw=14, .sh=16};
 			  	break;
 			
 			case RARE:
-			  	p_game->enemies[i].score = 5;
-	          	p_game->enemies[i].life = 1;
-	          	p_game->enemies[i].sprite = p_game->sprites.enemy;
+			  	p_game->enemies[i].score = 25;
+	          	p_game->enemies[i].life = 2;
 			 	p_game->enemies[i].total_frames = 2;
 			  	p_game->enemies[i].frame_time = 0.5f;
-			 	p_game->enemies->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
-        		p_game->enemies->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};
+			 	p_game->enemies[i].frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
+        		p_game->enemies[i].frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};
 			 	break;
 			
 			case LEGENDARY:
-			  	p_game->enemies[i].score = 15;
-	        	p_game->enemies[i].life = 1;
-	          	p_game->enemies[i].sprite = p_game->sprites.enemy;
+			  	p_game->enemies[i].score = 50;
+	        	p_game->enemies[i].life = 3;
 			  	p_game->enemies[i].total_frames = 2;
 			  	p_game->enemies[i].frame_time = 0.5f;
-			 	p_game->enemies->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
-        		p_game->enemies->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};
+			 	p_game->enemies[i].frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=223, .sw=14, .sh=16};
+        		p_game->enemies[i].frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=223, .sw=14, .sh=16};
 			  	break;
 		}
 		
@@ -93,29 +92,28 @@ void draw_enemy(const Game *p_game){
 			const enemy *e = &p_game->enemies[i];
 			AnimationFrameEnemy frame_info = e->frames[e->frame_atual];
 
+			// Dados Recorte
+
+			float sx = frame_info.sx;
+            float sy = frame_info.sy;
+            float sw = frame_info.sw; // Largura original do frame 
+            float sh = frame_info.sh; // Altura original do frame 
+
+			// Tamanho Dimensionado
+
+			float proporcao = sh / sw;
+			float dw = ENEMY_W; 
+            float dh = dw * proporcao;
+
 			// Centralizar o Desenho
 
-			float draw_x = e->x - (frame_info.sw / 2.0);
-            float draw_y = e->y - (frame_info.sh / 2.0);
+			float dx = e->x - (dw / 2.0);
+            float dy = e->y - (dh / 2.0);
 
-			al_draw_bitmap_region(e->sprite,
-                                  frame_info.sx, frame_info.sy,
-                                  frame_info.sw, frame_info.sh,
-                                  draw_x, draw_y,
-                                  0);
-								  
-			/*
-			float sprite_w = al_get_bitmap_width(p_game->sprites.enemy);
-   			float sprite_h = al_get_bitmap_height(p_game->sprites.enemy);
-
-			float new_sprite_w = ENEMY_W;
-			float new_sprite_h = ENEMY_H;
-
-			float draw_x = p_game->enemies[i].x - (new_sprite_w/ 2.0);   
-    		float draw_y = p_game->enemies[i].y - (new_sprite_h / 2.0); 
-
-			al_draw_scaled_bitmap(p_game->sprites.enemy, 0, 0, sprite_w, sprite_h, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
-			*/
+			al_draw_scaled_bitmap(e->sprite,      // A spritesheet correta para este inimigo
+                                  sx, sy, sw, sh, // A região a ser recortada da imagem
+                                  dx, dy, dw, dh, // A posição e o NOVO tamanho na tela
+                                  0);						
 		}
 	}
 }
@@ -164,6 +162,16 @@ void update_enemy(Game *p_game){  // MOVIMENTAÇÃO/COLISAO/SPEED INCREASE
 				}
 			}
 		}
+		if (p_game->enemies[i].dmg_count_timer > 0) {
+
+            // Se o cronômetro estiver ativo, diminui o tempo
+            p_game->enemies[i].dmg_count_timer -= 1.0 / FPS; 
+
+            // Se o tempo acabou...
+            if (p_game->enemies[i].dmg_count_timer <= 0) {
+                restaurar_animacao_padrao(&p_game->enemies[i]); 
+            }
+        }
 	}
 }
 
@@ -178,24 +186,44 @@ int contar_inimigos_vivos(Game *p_game){  // RETORNA O NUM DE INIMIGOS VIVOS
 	return enemies_alive;
 }
 
-/* void enemy_dmg_visuals_update(enemy *p_enemy){ // RETORNO VISUAL DO DANO -> VAI SER PASSADA DENTRO DA COLISSAO, ENT NN USAR A STRUCT GLOBAL
-	
-	switch(p_enemy->type){
-		case RARE:
-		  if(p_enemy->life == 1){
-			//p_enemy->cor = al_map_rgb(196, 194, 210);
-		  }
-		  break;
+// VER SE ESSE RETORNO VISUAL MEU FOI FEITO DA MELHOR FORMA:
 
+void enemy_dmg_visuals_update(enemy *p_enemy){ // RETORNO VISUAL DO DANO 
+	p_enemy->dmg_count_timer = 0.10f;
+	p_enemy->total_frames = 2;
+    p_enemy->frame_atual = 0; // Reinicia a animação para o novo estado
+	p_enemy->time_count = 0.0f;
+
+    p_enemy->frames[0] = (AnimationFrameEnemy){.sx=2, .sy=163, .sw=14, .sh=16};
+    p_enemy->frames[1] = (AnimationFrameEnemy){.sx=22, .sy=163, .sw=14, .sh=16};
+} 
+
+void restaurar_animacao_padrao(enemy *p_enemy){
+	
+	p_enemy->frame_atual = 0;
+	p_enemy->time_count = 0.0f;
+
+	switch(p_enemy->type){
+		case NORMAL:
+			p_enemy->total_frames = 2;
+			p_enemy->frame_time = 0.5f;
+			p_enemy->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=203, .sw=14, .sh=16};
+        	p_enemy->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=203, .sw=14, .sh=16};
+			break;
+			
+		case RARE:
+			p_enemy->total_frames = 2;
+			p_enemy->frame_time = 0.5f;
+			p_enemy->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=183, .sw=14, .sh=16};
+        	p_enemy->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=183, .sw=14, .sh=16};
+			break;
+			
 		case LEGENDARY:
-		  switch(p_enemy->life){
-			case 2:
-			   	//p_enemy->cor = al_map_rgb(181, 153, 96);
-                break;
-			case 1:
-			    //p_enemy->cor = al_map_rgb(195, 181, 154);
-                break;
-		  }
-		  break;
+			p_enemy->total_frames = 2;
+			p_enemy->frame_time = 0.5f;
+			p_enemy->frames[0] = (AnimationFrameEnemy){ .sx=2, .sy=223, .sw=14, .sh=16};
+        	p_enemy->frames[1] = (AnimationFrameEnemy){ .sx=22, .sy=223, .sw=14, .sh=16};
+			break;
 	}
-} */
+
+}

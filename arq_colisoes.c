@@ -51,7 +51,7 @@ void colisao_shot_enemy(Game *p_game){
 
 					p_game->shots[i].active = false; // "desativa o tiro"
 					p_game->enemies[j].life--;
-					//enemy_dmg_visuals_update(&p_game->enemies[j]);
+					enemy_dmg_visuals_update(&p_game->enemies[j]);
 
 					if(p_game->enemies[j].life <= 0){
 						p_game->enemies[j].active = false;
@@ -87,3 +87,49 @@ void colisao_enemy_shot_nave(Game *p_game){
     }
 }
 
+void colisao_shot_object(Game *p_game){
+
+	for(int i=0; i<MAX_SHOTS; i++){
+		if(p_game->shots[i].active){
+			for(int j=0; j<OBJECTS_NUMB; j++){
+				if(p_game->objects[j].active){
+					if(check_collision_retangulo(
+						p_game->shots[i].x, p_game->shots[i].y, SHOT_W, SHOT_H,
+						p_game->objects[j].x, p_game->objects[j].y, ENEMY_W, ENEMY_H)
+					){
+						p_game->shots[i].active = false;
+					}
+				}	
+			}
+		}
+	}
+}
+
+void colisao_enemy_shot_object(Game *p_game){
+
+	for(int i=0; i<MAX_ENEMIES_SHOTS; i++){
+		if(p_game->enemies_shots[i].active){
+			
+			for(int j=0; j<OBJECTS_NUMB; j++){
+				if(p_game->objects[j].active){
+
+					if(check_collision_retangulo(
+						p_game->enemies_shots[i].x, p_game->enemies_shots[i].y, SHOT_W, SHOT_H,
+						p_game->objects[j].x, p_game->objects[j].y, ENEMY_W, ENEMY_H)
+					){
+					
+						p_game->enemies_shots[i].active = false;
+						p_game->objects[j].life--;
+						al_play_sample(p_game->audio.explosao_objeto, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+						update_objects(p_game);
+						printf("Object atingido. Vidas restantes: %d", p_game->objects[j].life);
+
+						if(p_game->objects[j].life <= 0){
+							p_game->objects[j].active = false;
+						}
+					}
+				}
+			}
+		}
+	}
+}

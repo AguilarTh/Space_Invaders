@@ -3,10 +3,12 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include "arq_config.h"
 #include "arq_nave.h"
 #include "arq_enemy.h"
-#include "arq_shot.h"
+#include "arq_shot.h" 
 #include "arq_enemy_shot.h"
 #include "arq_object.h"
 #include "arq_explosao.h"
@@ -16,13 +18,28 @@ typedef struct {
     ALLEGRO_BITMAP *nave;
     ALLEGRO_BITMAP *nave_life;
     ALLEGRO_BITMAP *shot;
-    ALLEGRO_BITMAP *enemy; 
+    ALLEGRO_BITMAP *enemy;
     ALLEGRO_BITMAP *enemy_shot;
+    ALLEGRO_BITMAP *object_A;
+    ALLEGRO_BITMAP *object_B;
+    ALLEGRO_BITMAP *object_C;
     ALLEGRO_BITMAP *explosao;
     ALLEGRO_BITMAP *background_menu;
     ALLEGRO_BITMAP *background_jogo;
     // ... adicione outros sprites aqui conforme for criando
 } GameSprites;
+
+typedef struct {
+
+    ALLEGRO_SAMPLE *tiro_nave;
+    ALLEGRO_SAMPLE *tiro_enemy;
+    ALLEGRO_SAMPLE *explosao_nave;
+    ALLEGRO_SAMPLE *explosao_inimigo;
+    ALLEGRO_SAMPLE *explosao_objeto;
+
+    ALLEGRO_AUDIO_STREAM *musica_fundo_jogo;
+
+} GameAudio;
 
 typedef struct Game {
 
@@ -33,6 +50,7 @@ typedef struct Game {
     ALLEGRO_EVENT_QUEUE *event_queue;
     ALLEGRO_FONT *font;
     GameSprites sprites;
+    GameAudio audio;
 
     // --- Estado do Jogo ---
 

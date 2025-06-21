@@ -10,10 +10,11 @@ typedef struct{
     bool active; 
     int life;
     float x,y;
-    ALLEGRO_COLOR cor;
+    ALLEGRO_BITMAP *sprite;
 } object;
 
 void initObject(Game *p_game);
 void draw_object(const Game *p_game);
+void update_objects(Game *p_game);
 
 #endif 

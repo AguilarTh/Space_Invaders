@@ -27,6 +27,7 @@ typedef struct enemy{
     int total_frames;;
     float frame_time;
     float time_count;
+	float dmg_count_timer;
 	AnimationFrameEnemy frames[MAX_FRAMES_POR_ANIMAÇÃO];
 } enemy;
 
@@ -34,6 +35,7 @@ void initEnemy(Game *p_game);
 void draw_enemy(const Game *p_game);
 void update_enemy(Game *p_game);
 int contar_inimigos_vivos(Game *p_game);
-//void enemy_dmg_visuals_update(enemy *p_enemy);
+void enemy_dmg_visuals_update(enemy *p_enemy);
+void restaurar_animacao_padrao(enemy *p_enemy);
 
 #endif

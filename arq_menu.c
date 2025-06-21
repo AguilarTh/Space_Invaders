@@ -69,7 +69,16 @@ void reset_game(Game *p_game){
     initNave(p_game);
     initEnemy(p_game);
     initShot(p_game);
+    initObject(p_game);
     initEnemyShot(p_game);
     init_explosoes(p_game);
+
     p_game->score = 0;
+
+    // AUDIOS
+
+    al_set_audio_stream_playmode(p_game->audio.musica_fundo_jogo, ALLEGRO_PLAYMODE_LOOP);
+    al_attach_audio_stream_to_mixer(p_game->audio.musica_fundo_jogo, al_get_default_mixer());
+    al_set_audio_stream_gain(p_game->audio.musica_fundo_jogo, 0.0); // Volume da musica = 70%
+
 }

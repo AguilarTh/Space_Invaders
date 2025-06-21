@@ -4,6 +4,8 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <time.h>
 
 #include "arq_game.h"
@@ -71,6 +73,22 @@ int main(){
     	return -1;
 	}
 
+	// audio
+	if (!al_install_audio()) {
+        fprintf(stderr, "failed to initialize audio!\n");
+        return -1;
+    }
+
+	if (!al_init_acodec_addon()) {
+        fprintf(stderr, "Falha ao inicializar o addon de codecs de áudio!\n");
+        return -1;
+    }
+
+	if (!al_reserve_samples(10)) {
+        fprintf(stderr, "Falha ao reservar samples de áudio!\n");
+        return -1;
+    }
+
     game.timer = al_create_timer(1.0 / FPS);
     if(!game.timer) {
 		fprintf(stderr, "failed to create timer!\n");
@@ -88,7 +106,7 @@ int main(){
 		return -1;
 	} 
 
-	// -- PNG ---
+	// -- PNG --
 	game.sprites.background_menu = al_load_bitmap("background_menu.png");
 	if (!game.sprites.background_menu) {
 		fprintf(stderr, "Falha ao carregar a imagem 'background_menu.png'!\n");
@@ -104,7 +122,19 @@ int main(){
 	game.sprites.enemy_shot = al_load_bitmap("enemy_shot_sprite.png");
 	game.sprites.background_jogo = al_load_bitmap("background_jogo.png");
 	game.sprites.explosao = al_load_bitmap("explosao.png");
+	game.sprites.object_A = al_load_bitmap("object_um_A.png");
+	game.sprites.object_B = al_load_bitmap("object_um_B.png");
+	game.sprites.object_C = al_load_bitmap("object_um_C.png");
 
+	// -- AUDIO --
+
+	// al_play_sample(p_game->audio.tiro_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+	game.audio.tiro_nave = al_load_sample("tiro_nave.wav");
+	game.audio.tiro_enemy = al_load_sample("tiro_enemy.wav");
+	game.audio.explosao_nave = al_load_sample("explosao_nave.wav");
+	game.audio.explosao_inimigo = al_load_sample("explosao.wav");
+	game.audio.explosao_objeto =al_load_sample("explosao_objeto.wav");
+	game.audio.musica_fundo_jogo = al_load_audio_stream("musica_fundo_jogo.ogg", 4, 2048);
 	// ------------------------
 
     // FILA DE EVENTOS:
@@ -120,27 +150,6 @@ int main(){
 	al_register_event_source(game.event_queue, al_get_timer_event_source(game.timer)); // TEMPO
 	al_register_event_source(game.event_queue, al_get_keyboard_event_source()); // TECLA
 	al_register_event_source(game.event_queue, al_get_mouse_event_source()); // MOUSE
-
-	// VARIAVEIS DO JOGO:
-	/*
-	nave nave;
-	initNave(&nave, nave_sprite);
-
-	enemy enemies[MAX_ENEMIES];
-	initEnemy(enemies);
-
-	shot shots[MAX_SHOTS];
-	initShot(shots);
-
-	enemyshot enemies_shots[MAX_ENEMIES_SHOTS];
-	initEnemyShot(enemies_shots);
-
-	object objects[OBJECTS_NUMB];
-	initObject(objects);
-	
-	int score = 0; 
-	
-	*/
 
 	int high_score= load_highscore(); // Carregar o Recorde Salvo
 
@@ -212,7 +221,17 @@ int main(){
 	al_destroy_bitmap(game.sprites.nave_life);
 	al_destroy_bitmap(game.sprites.explosao);
 	al_destroy_bitmap(game.sprites.background_menu);
+	al_destroy_bitmap(game.sprites.object_A);
+	al_destroy_bitmap(game.sprites.object_B);
+	al_destroy_bitmap(game.sprites.object_C);
+
 	al_destroy_font(game.font);
+
+	al_destroy_sample(game.audio.tiro_nave);
+	al_destroy_sample(game.audio.explosao_inimigo);
+	al_destroy_sample(game.audio.tiro_enemy);
+    al_destroy_audio_stream(game.audio.musica_fundo_jogo);
+
     al_destroy_timer(game.timer);
 	destroy_display(&game);
 	al_destroy_event_queue(game.event_queue);

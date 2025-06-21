@@ -31,7 +31,7 @@ typedef enum{
 #define MAX_ENEMIES_SHOTS 50
 #define MAX_EXPLOSOES 20
 #define ENEMIES_BASE_SPEED 1.0
-#define ENEMIES_SPEED_INCREASE 0.5
+#define ENEMIES_SPEED_INCREASE 0.30
 #define MAX_SHOTS 1
 
 typedef enum{
@@ -48,14 +48,14 @@ typedef enum{
 #define NAVE_W 80
 #define NAVE_H 50
 
-#define SHOT_W 30
-#define SHOT_H 40
+#define SHOT_W 20
+#define SHOT_H 45
 
-#define ENEMY_W 60
+#define ENEMY_W 40
 #define ENEMY_H 30
 
-#define OBJECTS_NUMB 0
-#define OBJECT_W 75
-#define OBJECT_H 75
+#define OBJECTS_NUMB 3
+#define OBJECT_W 100
+#define OBJECT_H 100
 
 #endif 

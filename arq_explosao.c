@@ -9,7 +9,7 @@ void init_explosoes(Game *p_game){
 
         exp->active = false;
         exp->sprite = p_game->sprites.explosao;
-        exp->frame_time = 0.30f; // Duração de cada frame (mais baixo = mais rápido)
+        exp->frame_time = 0.45f; // Duração de cada frame (mais baixo = mais rápido)
         exp->total_frames = 7; 
 
         // Detalhes da Animação
@@ -32,6 +32,7 @@ void ativar_explosao(Game *p_game, float x, float y){
     for (int i = 0; i < MAX_EXPLOSOES; i++) {
         if (!p_game->explosoes[i].active) {
             p_game->explosoes[i].active = true;
+            al_play_sample(p_game->audio.explosao_inimigo, 0.2, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             
             // Posição do inimigo morto
             p_game->explosoes[i].x = x; 

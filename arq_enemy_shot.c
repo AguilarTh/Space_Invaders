@@ -16,12 +16,13 @@ void initEnemyShot(Game *p_game){  // INICIALIZA TODOS COMO FALSE A PRIORI
 
 void try_enemy_shot(Game *p_game){  // % DE DISPARO
 
-    if(rand() % 200 == 0){  // chance de 1/200
+    if(rand() % 150 == 0){  // chance de 1/200
 
         int shooter_ind = rand() % MAX_ENEMIES;
         if(p_game->enemies[shooter_ind].active){
             for(int i=0; i<MAX_ENEMIES_SHOTS; i++){
                 if(!p_game->enemies_shots[i].active){
+                    al_play_sample(p_game->audio.tiro_enemy, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                     p_game->enemies_shots[i].active = true;
                     p_game->enemies_shots[i].x = p_game->enemies[shooter_ind].x + ENEMY_W/2;
                     p_game->enemies_shots[i].y = p_game->enemies[shooter_ind].y + ENEMY_H;
@@ -36,7 +37,6 @@ void try_enemy_shot(Game *p_game){  // % DE DISPARO
 void draw_enemy_shot(const Game *p_game){
     for(int i=0; i<MAX_ENEMIES_SHOTS; i++){
         if(p_game->enemies_shots[i].active){
-            
             float sprite_w = al_get_bitmap_width(p_game->sprites.enemy_shot);
    			float sprite_h = al_get_bitmap_height(p_game->sprites.enemy_shot);
 

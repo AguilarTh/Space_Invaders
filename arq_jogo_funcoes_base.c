@@ -31,6 +31,9 @@ void processa_eventos_jogo(ALLEGRO_EVENT ev, Game *p_game){
                         p_game->shots[i].active = true;
                         p_game->shots[i].x = p_game->nave.x - SHOT_W /2;
                         p_game->shots[i].y = SCREEN_H - FLOOR_H/2 - NAVE_H;
+
+                        // SAMPLE - VOLUME - BALANÇO - VELOCIDADE - MODO DE PLAY - ID DE RETORNO
+                        al_play_sample(p_game->audio.tiro_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         break; // atirar apenas 1 vez 
                     }
                 }
@@ -79,6 +82,7 @@ void atualiza_logica_jogo(Game *p_game){
     // Verificações de Colisao
 
     if(colisao_enemy_solo(p_game)){ // Detecção de Colisão 
+        al_play_sample(p_game->audio.explosao_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
         p_game->estado_atual = MENU;
     }
 
@@ -86,10 +90,13 @@ void atualiza_logica_jogo(Game *p_game){
         p_game->estado_atual = MENU;
     }
 
+    colisao_enemy_shot_object(p_game);
+    colisao_shot_object(p_game);
     colisao_shot_enemy(p_game);
     colisao_enemy_shot_nave(p_game);
 
     if(p_game->nave.life <=0){
+        al_play_sample(p_game->audio.explosao_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
         p_game->estado_atual = MENU;
     }		
 
@@ -113,6 +120,7 @@ void desenha_cena_jogo(const Game *p_game){
     draw_high_score(p_game);
     draw_shots(p_game);
     draw_enemy_shot(p_game);
+    draw_object(p_game);
 
     al_flip_display();
 }
