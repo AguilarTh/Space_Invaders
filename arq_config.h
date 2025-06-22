@@ -27,7 +27,7 @@ typedef enum{
 
 typedef enum{
     BUFF_VIDA,
-    BUFF_TIROS,
+    BUFF_IMUNIDADE,
     BUFF_VEL
 } BuffTypes;
 
@@ -42,7 +42,7 @@ typedef enum{
 // --- NAVE STATS ---
 
 #define MAX_SHOTS 1
-#define NAVE_BASE_SPEED 2
+#define NAVE_BASE_SPEED 5
 #define MAX_POWERUPS 3 // maximo de powerups na tela
 
 typedef enum{

@@ -26,8 +26,9 @@ typedef struct {
     ALLEGRO_BITMAP *object_C;
     ALLEGRO_BITMAP *explosao;
     ALLEGRO_BITMAP *powerUp_Life;
-    ALLEGRO_BITMAP *powerUp_Tiros;
+    ALLEGRO_BITMAP *powerUp_Imunidade;
     ALLEGRO_BITMAP *powerUp_Vel;
+    ALLEGRO_BITMAP *shield;
 
     ALLEGRO_BITMAP *background_menu;
     ALLEGRO_BITMAP *background_jogo;
@@ -68,7 +69,7 @@ typedef struct Game {
 
     nave nave;
     enemy enemies[MAX_ENEMIES];
-    shot shots[MAX_SHOTS];
+    shot shots[10];
     enemyshot enemies_shots[MAX_ENEMIES_SHOTS];
     object objects[OBJECTS_NUMB];
     PowerUpDrop powerups[MAX_POWERUPS];
@@ -76,8 +77,8 @@ typedef struct Game {
     // --- CONTROLE DE BUFFS ---
 
     float tempo_buff_velocidade_restante;
-    float tempo_buff_tiros_restante;
-    int max_shots_atual;
+    float tempo_buff_imunidade_restante;
+    bool immunity;
 
     // --- ANIMAÇÕES ---
 

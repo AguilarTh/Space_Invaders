@@ -9,7 +9,7 @@ void initShot(Game *p_game){  // nao definir a loc do shot dentro dessa varialve
 	for(int i=0; i<MAX_SHOTS; i++){
 
 		p_game->shots[i].active = false; // começa inicializando ele como FALSO
-	    p_game->shots[i].y_vel = 10;
+	    p_game->shots[i].y_vel = 6;
 	    p_game->shots[i].sprite = p_game->sprites.shot;
 	}
 }

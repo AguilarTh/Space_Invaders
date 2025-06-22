@@ -16,7 +16,7 @@ void initEnemyShot(Game *p_game){  // INICIALIZA TODOS COMO FALSE A PRIORI
 
 void try_enemy_shot(Game *p_game){  // % DE DISPARO
 
-    int tiro_rng = 200 - (p_game->round_atual * 5);
+    int tiro_rng = 50 - (p_game->round_atual * 5);
     if(tiro_rng<50){
         tiro_rng = 50;
     }

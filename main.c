@@ -127,8 +127,9 @@ int main(){
 	game.sprites.object_B = al_load_bitmap("object_um_B.png");
 	game.sprites.object_C = al_load_bitmap("object_um_C.png");
 	game.sprites.powerUp_Life = al_load_bitmap("powerUp_Life.png");
-	game.sprites.powerUp_Tiros = al_load_bitmap("powerUp_Tiros.png");
+	game.sprites.powerUp_Imunidade = al_load_bitmap("powerUp_Tiros.png");
 	game.sprites.powerUp_Vel = al_load_bitmap("powerUp_Vel.png");
+	game.sprites.shield = al_load_bitmap("shield.png");
 	
 
 	// -- AUDIO --
@@ -229,12 +230,18 @@ int main(){
 	al_destroy_bitmap(game.sprites.object_A);
 	al_destroy_bitmap(game.sprites.object_B);
 	al_destroy_bitmap(game.sprites.object_C);
+	al_destroy_bitmap(game.sprites.powerUp_Life);
+	al_destroy_bitmap(game.sprites.powerUp_Imunidade);
+	al_destroy_bitmap(game.sprites.powerUp_Vel);
+	al_destroy_bitmap(game.sprites.shield);
 
 	al_destroy_font(game.font);
 
 	al_destroy_sample(game.audio.tiro_nave);
-	al_destroy_sample(game.audio.explosao_inimigo);
 	al_destroy_sample(game.audio.tiro_enemy);
+	al_destroy_sample(game.audio.explosao_inimigo);
+	al_destroy_sample(game.audio.explosao_objeto);
+	al_destroy_sample(game.audio.explosao_nave);
     al_destroy_audio_stream(game.audio.musica_fundo_jogo);
 
     al_destroy_timer(game.timer);

@@ -75,6 +75,10 @@ void reset_game(Game *p_game){
 
     p_game->score = 0;
     p_game->round_atual = 1;
+    
+    p_game->immunity = false;
+    p_game->tempo_buff_velocidade_restante = 0;
+    p_game->tempo_buff_imunidade_restante = 0;
 
     initEnemy(p_game);
 

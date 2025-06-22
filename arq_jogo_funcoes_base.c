@@ -86,20 +86,21 @@ void atualiza_logica_jogo(Game *p_game){
 
     if (p_game->tempo_buff_velocidade_restante > 0){
         p_game->tempo_buff_velocidade_restante -= 1.0 / FPS;
-        p_game->nave.vel = NAVE_BASE_SPEED * 2; // Velocidade em dobro
+        p_game->nave.vel = NAVE_BASE_SPEED * 2; // Multiplicador da velocidade
 
         if (p_game->tempo_buff_velocidade_restante <= 0) {
             p_game->nave.vel = NAVE_BASE_SPEED; // Volta ao normal
         }
     }
 
+    if (p_game->tempo_buff_imunidade_restante > 0){
+        p_game->tempo_buff_imunidade_restante -= 1.0 / FPS;
+        p_game->immunity = true; 
+        shield_buff(p_game);
+        printf("imunidade ativada");
 
-    if (p_game->tempo_buff_tiros_restante > 0){
-        p_game->tempo_buff_tiros_restante -= 1.0 / FPS;
-        p_game->max_shots_atual = MAX_SHOTS + 2; // +2 tiros
-
-        if (p_game->tempo_buff_tiros_restante <= 0) {
-            p_game->max_shots_atual = MAX_SHOTS; // Volta ao normal
+        if (p_game->tempo_buff_imunidade_restante <= 0) {
+            p_game->immunity = false; 
         }
     }
 
@@ -123,6 +124,7 @@ void atualiza_logica_jogo(Game *p_game){
     colisao_shot_object(p_game);
     colisao_shot_enemy(p_game);
     colisao_enemy_shot_nave(p_game);
+    
 
     if(p_game->nave.life <=0){
         al_play_sample(p_game->audio.explosao_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -148,6 +150,7 @@ void desenha_cena_jogo(const Game *p_game){
     draw_round(p_game);
     draw_score(p_game);
     draw_high_score(p_game);
+    draw_buffs(p_game);
     draw_shots(p_game);
     draw_enemy_shot(p_game);
     draw_object(p_game);
@@ -185,4 +188,11 @@ void draw_round(const Game *p_game){
 void draw_high_score(const Game *p_game){
 
 	al_draw_textf(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W - 10, 10, ALLEGRO_ALIGN_RIGHT, "Recorde: %d", p_game->high_score);
+}
+
+void draw_buffs(const Game *p_game){
+
+    	al_draw_textf(p_game->font, al_map_rgb(255, 255, 255), 
+                      SCREEN_W - 10, SCREEN_H - 50, ALLEGRO_ALIGN_RIGHT, 
+                      "VEL: %2f", p_game->nave.vel);
 }

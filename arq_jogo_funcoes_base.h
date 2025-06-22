@@ -17,4 +17,6 @@ void draw_score(const Game *p_game);
 void draw_high_score(const Game *p_game);
 void draw_round(const Game *p_game);
 
+void draw_buffs(const Game *p_game);
+
 #endif 

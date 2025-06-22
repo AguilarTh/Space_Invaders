@@ -81,8 +81,10 @@ void colisao_enemy_shot_nave(Game *p_game){
 			){
 
 				p_game->enemies_shots[i].active = false;
-				p_game->nave.life--;
-				printf("Nave atingida. Vidas restantes: %d", p_game->nave.life);
+				if(p_game->immunity == false){
+					p_game->nave.life--;
+					printf("Nave atingida. Vidas restantes: %d", p_game->nave.life);
+				}
 		    }
 	    }
     }

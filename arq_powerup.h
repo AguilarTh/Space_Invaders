@@ -21,5 +21,6 @@ void tentar_dropar_buff(Game *p_game, enemy *inimigo_morto);
 void update_powerups(Game *p_game);
 void draw_powerups(Game *p_game);
 void aplicar_buff(Game *p_game, BuffTypes tipo);
+void shield_buff(Game *p_game);
 
 #endif
