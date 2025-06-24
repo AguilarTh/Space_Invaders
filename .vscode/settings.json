@@ -18,6 +18,10 @@
         "allegro_image.h": "c",
         "arq_nave.h": "c",
         "time.h": "c",
-        "arq_explosao.h": "c"
+        "arq_explosao.h": "c",
+        "arq_pause.h": "c",
+        "arq_game.h": "c",
+        "arq_load.h": "c",
+        "allegro_audio.h": "c"
     }
 }

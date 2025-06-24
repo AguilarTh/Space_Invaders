@@ -114,33 +114,18 @@ void aplicar_buff(Game *p_game, BuffTypes tipo) {
         case BUFF_VIDA:
             if(p_game->nave.life <= 2){
                 p_game->nave.life++;
+                al_play_sample(p_game->audio.powerup_life, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             }
             break;
 
         case BUFF_IMUNIDADE:
             p_game->tempo_buff_imunidade_restante = 10.0f; // TIMER
+            al_play_sample(p_game->audio.powerup_imm, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             break;
 
         case BUFF_VEL:
             p_game->tempo_buff_velocidade_restante = 5.0f; // TIMER
+            al_play_sample(p_game->audio.powerup_vel, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             break;
     }
-}
-
-void shield_buff(Game *p_game){
-
-    if(p_game->immunity == true){
-
-        float sprite_w = al_get_bitmap_width(p_game->sprites.shield);
-   		float sprite_h = al_get_bitmap_height(p_game->sprites.shield);
-
-		float new_sprite_w = NAVE_W;
-	    float new_sprite_h = NAVE_H;
-
-		float draw_x = p_game->nave.x - (new_sprite_w / 2.0);  
-        float draw_y = (SCREEN_H - FLOOR_H) - (new_sprite_h / 2.0);
-
-		al_draw_scaled_bitmap(p_game->sprites.shield, 0, 0, sprite_w, sprite_h - 20, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
-    }
-
 }

@@ -98,7 +98,7 @@ void colisao_shot_object(Game *p_game){
 				if(p_game->objects[j].active){
 					if(check_collision_retangulo(
 						p_game->shots[i].x, p_game->shots[i].y, SHOT_W, SHOT_H,
-						p_game->objects[j].x, p_game->objects[j].y, ENEMY_W, ENEMY_H)
+						p_game->objects[j].x - (OBJECT_W/2), p_game->objects[j].y - (OBJECT_H/2), OBJECT_W, OBJECT_H)
 					){
 						p_game->shots[i].active = false;
 					}
@@ -118,7 +118,7 @@ void colisao_enemy_shot_object(Game *p_game){
 
 					if(check_collision_retangulo(
 						p_game->enemies_shots[i].x, p_game->enemies_shots[i].y, SHOT_W, SHOT_H,
-						p_game->objects[j].x, p_game->objects[j].y, OBJECT_W, OBJECT_H)
+						p_game->objects[j].x - (OBJECT_W/2), p_game->objects[j].y - (OBJECT_H/2), OBJECT_W, OBJECT_H)
 					){
 					
 						p_game->enemies_shots[i].active = false;

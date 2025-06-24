@@ -22,6 +22,8 @@
 #include "arq_display.h"
 #include "arq_explosao.h"
 #include "arq_powerup.h"
+#include "arq_pause.h"
+#include "arq_load.h"
 
 int main(){
 
@@ -100,49 +102,7 @@ int main(){
 
 	// ---- ARQUIVOS EXTERNOS --------
 
-	// -- FONTE --
-    game.font = al_load_ttf_font("font_space.ttf", 35, 0);   
-	if(game.font == NULL) {
-		fprintf(stderr, "font file does not exist or cannot be accessed!\n");
-		return -1;
-	} 
-
-	// -- PNG --
-	game.sprites.background_menu = al_load_bitmap("background_menu.png");
-	if (!game.sprites.background_menu) {
-		fprintf(stderr, "Falha ao carregar a imagem 'background_menu.png'!\n");
-		al_destroy_font(game.font);
-		al_destroy_display(game.display);
-		return -1;
-	}
-
-	game.sprites.nave = al_load_bitmap("nave_sprite.png");
-	game.sprites.nave_life = al_load_bitmap("hearts.png");
-	game.sprites.shot = al_load_bitmap("shot_sprite.png");
-	game.sprites.enemy = al_load_bitmap("enemy_sprite_new.png");
-	game.sprites.enemy_shot = al_load_bitmap("enemy_shot_sprite.png");
-	game.sprites.background_jogo = al_load_bitmap("background_jogo.png");
-	game.sprites.explosao = al_load_bitmap("explosao.png");
-	game.sprites.object_A = al_load_bitmap("object_um_A.png");
-	game.sprites.object_B = al_load_bitmap("object_um_B.png");
-	game.sprites.object_C = al_load_bitmap("object_um_C.png");
-	game.sprites.powerUp_Life = al_load_bitmap("powerUp_Life.png");
-	game.sprites.powerUp_Imunidade = al_load_bitmap("powerUp_Tiros.png");
-	game.sprites.powerUp_Vel = al_load_bitmap("powerUp_Vel.png");
-	game.sprites.shield = al_load_bitmap("shield.png");
-	
-
-	// -- AUDIO --
-
-	// al_play_sample(p_game->audio.tiro_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-	game.audio.tiro_nave = al_load_sample("tiro_nave.wav");
-	game.audio.tiro_enemy = al_load_sample("tiro_enemy.wav");
-	game.audio.explosao_nave = al_load_sample("explosao_nave.wav");
-	game.audio.explosao_inimigo = al_load_sample("explosao.wav");
-	game.audio.explosao_objeto =al_load_sample("explosao_objeto.wav");
-	game.audio.musica_fundo_jogo = al_load_audio_stream("musica_fundo_jogo.ogg", 4, 2048);
-	// ------------------------
-
+	loads(&game);
     // FILA DE EVENTOS:
 
 	game.event_queue = al_create_event_queue();
@@ -178,32 +138,37 @@ int main(){
 		switch (game.estado_atual){
 
 			case MENU:
+
+				gerenciar_musicas(&game);
 			    process_menu_events(ev, &game);
 				draw_menu(&game);
 
 				if(game.estado_atual == JOGO_ATIVO) {
                     reset_game(&game);
                 }
+
+    			al_set_audio_stream_gain(game.audio.musica_menu, 0.3); // Volume da musica = 70%
 				break;
 			
 			case JOGO_ATIVO:
-			    
 			    processa_eventos_jogo(ev, &game);
 
 		        if(ev.type == ALLEGRO_EVENT_TIMER) { // temporizador / t -> t+1
 					
+					gerenciar_musicas(&game);
 					atualiza_logica_jogo(&game);
 			        desenha_cena_jogo(&game);
 				}	
 				break;
-			
-			case AJUDA:
-			    // loga
-				break;
-			
-			case CONFIG:
-			    // loga
-				break;	
+
+			case PAUSE:
+				processa_eventos_pause(ev, &game);
+				desenha_cena_jogo(&game);	
+				
+				if (game.estado_atual == PAUSE){
+                	draw_pause_overlay(&game);
+           		}
+			break;
 
 			default:
 				break;
@@ -219,31 +184,7 @@ int main(){
 
     // ROTINAS DE DESTRUIÇÃO -> boa pratica
 
-	al_destroy_bitmap(game.sprites.background_jogo);
-	al_destroy_bitmap(game.sprites.nave);
-	al_destroy_bitmap(game.sprites.shot);
-	al_destroy_bitmap(game.sprites.enemy);
-	al_destroy_bitmap(game.sprites.enemy_shot);
-	al_destroy_bitmap(game.sprites.nave_life);
-	al_destroy_bitmap(game.sprites.explosao);
-	al_destroy_bitmap(game.sprites.background_menu);
-	al_destroy_bitmap(game.sprites.object_A);
-	al_destroy_bitmap(game.sprites.object_B);
-	al_destroy_bitmap(game.sprites.object_C);
-	al_destroy_bitmap(game.sprites.powerUp_Life);
-	al_destroy_bitmap(game.sprites.powerUp_Imunidade);
-	al_destroy_bitmap(game.sprites.powerUp_Vel);
-	al_destroy_bitmap(game.sprites.shield);
-
-	al_destroy_font(game.font);
-
-	al_destroy_sample(game.audio.tiro_nave);
-	al_destroy_sample(game.audio.tiro_enemy);
-	al_destroy_sample(game.audio.explosao_inimigo);
-	al_destroy_sample(game.audio.explosao_objeto);
-	al_destroy_sample(game.audio.explosao_nave);
-    al_destroy_audio_stream(game.audio.musica_fundo_jogo);
-
+	destroys(&game);
     al_destroy_timer(game.timer);
 	destroy_display(&game);
 	al_destroy_event_queue(game.event_queue);

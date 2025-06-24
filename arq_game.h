@@ -42,8 +42,12 @@ typedef struct {
     ALLEGRO_SAMPLE *explosao_nave;
     ALLEGRO_SAMPLE *explosao_inimigo;
     ALLEGRO_SAMPLE *explosao_objeto;
+    ALLEGRO_SAMPLE *powerup_life;
+    ALLEGRO_SAMPLE *powerup_imm;
+    ALLEGRO_SAMPLE *powerup_vel;
 
-    ALLEGRO_AUDIO_STREAM *musica_fundo_jogo;
+    ALLEGRO_AUDIO_STREAM *musica_jogo;
+    ALLEGRO_AUDIO_STREAM *musica_menu;
 
 } GameAudio;
 
@@ -61,6 +65,7 @@ typedef struct Game {
     // --- Estado do Jogo ---
 
     GameStates estado_atual;
+    GameStates musica_ativa;
     int round_atual;
     int score;
     int high_score;

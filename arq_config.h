@@ -20,8 +20,7 @@
 typedef enum{
     MENU,
     JOGO_ATIVO,
-    AJUDA,
-    CONFIG,
+    PAUSE,
     SAIR
 } GameStates;
 
@@ -42,7 +41,7 @@ typedef enum{
 // --- NAVE STATS ---
 
 #define MAX_SHOTS 1
-#define NAVE_BASE_SPEED 5
+#define NAVE_BASE_SPEED 7
 #define MAX_POWERUPS 3 // maximo de powerups na tela
 
 typedef enum{
@@ -69,7 +68,10 @@ typedef enum{
 #define OBJECT_W 100
 #define OBJECT_H 100
 
-#define POWERUP_W 40
-#define POWERUP_H 40
+#define POWERUP_W 25
+#define POWERUP_H 25
+
+#define POWERUP_TIMER_W 43
+#define POWERUP_TIMER_H 43
 
 #endif 

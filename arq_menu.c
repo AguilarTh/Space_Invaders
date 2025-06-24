@@ -6,18 +6,20 @@
 #include "arq_display.h"
 
 void draw_menu(const Game *p_game){
-    // FUNDO
-    al_clear_to_color(al_map_rgb(20, 20, 40));  // Essa colori com uma cor de fundo
-    //al_draw_bitmap(background, 0, 0, 0); // Essa coloca uma imagem de fundo
+
+    al_clear_to_color(al_map_rgb(0, 0, 0)); // LIMPA A TELA
+
+    float bg_w = al_get_bitmap_width(p_game->sprites.background_menu);
+    float bg_h = al_get_bitmap_height(p_game->sprites.background_menu);
+
+    al_draw_scaled_bitmap(p_game->sprites.background_menu, 0, 0, bg_w, bg_h, 0, 0, SCREEN_W, SCREEN_H, 0);
 
     // TITULO
-    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4, ALLEGRO_ALIGN_CENTER, "Space Defender");
+    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4, ALLEGRO_ALIGN_CENTER, "Space Invaders");
 
     // OPÇÃO
-    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2, ALLEGRO_ALIGN_CENTER, "NOVO JOGO");
-    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 40, ALLEGRO_ALIGN_CENTER, "AJUDA");
-    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 80, ALLEGRO_ALIGN_CENTER, "CONFIGURACAO");
-    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 120, ALLEGRO_ALIGN_CENTER, "SAIR");
+    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 150, ALLEGRO_ALIGN_CENTER, "NOVO JOGO");
+    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 190, ALLEGRO_ALIGN_CENTER, "SAIR");
 
     al_flip_display();
 }
@@ -36,31 +38,24 @@ void process_menu_events(ALLEGRO_EVENT ev, Game *p_game){
 
         // A: NOVO JOGO
         if (mouse_x > SCREEN_W / 2 - 100 && mouse_x < SCREEN_W / 2 + 100 &&
-            mouse_y > SCREEN_H / 2 - 15 && mouse_y < SCREEN_H / 2 + 15) {
+            mouse_y > SCREEN_H / 2 + 150 && mouse_y < SCREEN_H / 2 + 180) {
             printf("Botao NOVO JOGO clicado!\n");
             p_game->estado_atual = JOGO_ATIVO; 
         }
         
-        // A: AJUDA
+        // A: SAIR
         if (mouse_x > SCREEN_W / 2 - 100 && mouse_x < SCREEN_W / 2 + 100 &&
-            mouse_y > SCREEN_H / 2 + 25 && mouse_y < SCREEN_H / 2 + 55) {
-            printf("Botao AJUDA clicado!\n");
-            // *estado_atual = AJUDA; // (Implementaremos no futuro)
+            mouse_y > SCREEN_H / 2 + 190 && mouse_y < SCREEN_H / 2 + 210) {
+            printf("Botao SAIR clicado!\n");
+            p_game->estado_atual = SAIR;
         }
 
-        // A: CONFIG
+        /* A: CONFIG
         if (mouse_x > SCREEN_W / 2 - 100 && mouse_x < SCREEN_W / 2 + 100 &&
             mouse_y > SCREEN_H / 2 + 65 && mouse_y < SCREEN_H / 2 + 95) {
             printf("Botao CONFIGURACAO clicado!\n");
             // *estado_atual = CONFIG; // (Implementaremos no futuro)
-        }
-
-        // A: SAIR
-        if (mouse_x > SCREEN_W / 2 - 100 && mouse_x < SCREEN_W / 2 + 100 &&
-            mouse_y > SCREEN_H / 2 + 105 && mouse_y < SCREEN_H / 2 + 135) {
-            printf("Botao SAIR clicado!\n");
-            p_game->estado_atual = SAIR;
-        }
+        } */
     }
 }
 
@@ -83,9 +78,4 @@ void reset_game(Game *p_game){
     initEnemy(p_game);
 
     // AUDIOS DE FUNDO;
-
-    al_set_audio_stream_playmode(p_game->audio.musica_fundo_jogo, ALLEGRO_PLAYMODE_LOOP);
-    al_attach_audio_stream_to_mixer(p_game->audio.musica_fundo_jogo, al_get_default_mixer());
-    al_set_audio_stream_gain(p_game->audio.musica_fundo_jogo, 0.0); // Volume da musica = 70%
-
 }

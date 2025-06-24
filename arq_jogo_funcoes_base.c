@@ -42,6 +42,10 @@ void processa_eventos_jogo(ALLEGRO_EVENT ev, Game *p_game){
             case ALLEGRO_KEY_ESCAPE:
                p_game->estado_atual = MENU;
                break;
+            
+            case ALLEGRO_KEY_P:
+               p_game->estado_atual = PAUSE;
+               break;
         }
     }
 
@@ -86,7 +90,7 @@ void atualiza_logica_jogo(Game *p_game){
 
     if (p_game->tempo_buff_velocidade_restante > 0){
         p_game->tempo_buff_velocidade_restante -= 1.0 / FPS;
-        p_game->nave.vel = NAVE_BASE_SPEED * 2; // Multiplicador da velocidade
+        p_game->nave.vel = NAVE_BASE_SPEED * 1.5; // Multiplicador da velocidade
 
         if (p_game->tempo_buff_velocidade_restante <= 0) {
             p_game->nave.vel = NAVE_BASE_SPEED; // Volta ao normal
@@ -96,8 +100,6 @@ void atualiza_logica_jogo(Game *p_game){
     if (p_game->tempo_buff_imunidade_restante > 0){
         p_game->tempo_buff_imunidade_restante -= 1.0 / FPS;
         p_game->immunity = true; 
-        shield_buff(p_game);
-        printf("imunidade ativada");
 
         if (p_game->tempo_buff_imunidade_restante <= 0) {
             p_game->immunity = false; 
@@ -192,7 +194,62 @@ void draw_high_score(const Game *p_game){
 
 void draw_buffs(const Game *p_game){
 
-    	al_draw_textf(p_game->font, al_map_rgb(255, 255, 255), 
-                      SCREEN_W - 10, SCREEN_H - 50, ALLEGRO_ALIGN_RIGHT, 
-                      "VEL: %2f", p_game->nave.vel);
+    float sprite_shield_w = al_get_bitmap_width(p_game->sprites.shield);
+    float sprite_shield_h = al_get_bitmap_height(p_game->sprites.shield);
+
+    float new_sprite_w = POWERUP_TIMER_W;
+	float new_sprite_h = POWERUP_TIMER_H;
+
+    float new_sprite_shield_w = NAVE_W;
+	float new_sprite_shield_h = NAVE_W * 0.55;
+
+	float draw_x = SCREEN_W - ( POWERUP_TIMER_W + 10);
+	float draw_y = SCREEN_H - 50;
+
+    float draw_shield_x = p_game->nave.x - NAVE_W / 2;
+    float draw_shield_y = (SCREEN_H - FLOOR_H) - ( new_sprite_shield_h + 25 );
+
+    if(p_game->tempo_buff_imunidade_restante > 0){
+        al_draw_scaled_bitmap(p_game->sprites.powerUp_Imunidade, 0, 0, 86, 86, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
+        al_draw_scaled_bitmap(p_game->sprites.shield, 0, 0, sprite_shield_w, sprite_shield_h, draw_shield_x, draw_shield_y, new_sprite_shield_w, new_sprite_shield_h, 0);
+    }
+
+     if (p_game->tempo_buff_velocidade_restante > 0) {
+        al_draw_scaled_bitmap(p_game->sprites.powerUp_Vel, 0, 0, 86, 86, draw_x - ( POWERUP_TIMER_W + 10), draw_y, new_sprite_w, new_sprite_h, 0);
+    }
+}
+
+// GERENCIADOR DAS MUSICAS
+
+void gerenciar_musicas(Game *p_game){
+    
+    if (p_game->estado_atual == p_game->musica_ativa) {
+        return;
+    }
+
+    al_set_audio_stream_playing(p_game->audio.musica_menu, false);
+    al_set_audio_stream_playing(p_game->audio.musica_jogo, false);
+
+   switch (p_game->estado_atual) {
+        case MENU:
+            al_set_audio_stream_playing(p_game->audio.musica_menu, true);
+            p_game->musica_ativa = MENU; 
+            break;
+
+        case JOGO_ATIVO:
+            al_set_audio_stream_playing(p_game->audio.musica_jogo, true);
+            p_game->musica_ativa = JOGO_ATIVO; 
+            break;
+
+        case PAUSE:
+            if (p_game->musica_ativa != JOGO_ATIVO) {
+                al_set_audio_stream_playing(p_game->audio.musica_jogo, true);
+                p_game->musica_ativa = JOGO_ATIVO;
+            }
+            break;
+
+        default:
+            p_game->musica_ativa = SAIR; 
+            break;
+    }
 }
