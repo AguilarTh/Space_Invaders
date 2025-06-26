@@ -2,6 +2,8 @@
 #include "arq_game.h"
 #include "arq_config.h"
 #include "arq_colisoes.h"
+#include "arq_desenhos_avulsos.h"
+#include "arq_highscore.h"
 #include <stdio.h>
 
 // EVENTOS MOUSE/TECLADO:
@@ -78,7 +80,7 @@ void atualiza_logica_jogo(Game *p_game){
 
     update_nave(p_game);  // !!!!! enderer direito pq nao usar o & !!!!!!
     update_enemy(p_game); // Nao usamos o FOR aq pois ele agora ja está presente dentre da função
-    // Main + limpo ( tipo um sumarios ) e ajuda na centralizacao de logica, inimigos movem como um bloco
+                          // Main + limpo ( tipo um sumarios ) e ajuda na centralizacao de logica, inimigos movem como um bloco
     update_shot(p_game);
     
     try_enemy_shot(p_game);
@@ -108,11 +110,6 @@ void atualiza_logica_jogo(Game *p_game){
 
     // Verificações de Colisao
 
-    if(colisao_enemy_solo(p_game)){ // Detecção de Colisão 
-        al_play_sample(p_game->audio.explosao_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-        p_game->estado_atual = MENU;
-    }
-
     if(contar_inimigos_vivos(p_game) == 0){
         p_game->round_atual++;
         p_game->score += 500;
@@ -128,10 +125,19 @@ void atualiza_logica_jogo(Game *p_game){
     colisao_enemy_shot_nave(p_game);
     
 
-    if(p_game->nave.life <=0){
-        al_play_sample(p_game->audio.explosao_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-        p_game->estado_atual = MENU;
-    }		
+    if(p_game->nave.life <=0 || colisao_enemy_solo(p_game)){
+        al_play_sample(p_game->audio.explosao_nave, 0.4, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+
+        if(p_game->score < p_game->high_score){
+            p_game->estado_atual = NEW_RECORD;
+            save_highscore(p_game->score); 
+            p_game->high_score = p_game->score; 
+        }
+        
+        else if(p_game->score >= p_game->high_score){
+            p_game->estado_atual = GAME_OVER;
+        }
+    }		       
 
     if(al_get_timer_count(p_game->timer)%(int)FPS == 0){ // PASSOU 1 SEC 
 		printf("\n%d segundos se passaram...", (int)(al_get_timer_count(p_game->timer)/FPS));
@@ -159,64 +165,6 @@ void desenha_cena_jogo(const Game *p_game){
     draw_powerups(p_game);
 
     al_flip_display();
-}
-
-// FUNÇÕES DE DESENHO AVULSO: ( Talvez fazer um arquivo separado depois )
-
-void draw_scenario(const Game *p_game){
-
-    al_clear_to_color(al_map_rgb(0, 0, 0)); // LIMPA A TELA
-
-    float bg_w = al_get_bitmap_width(p_game->sprites.background_jogo);
-    float bg_h = al_get_bitmap_height(p_game->sprites.background_jogo);
-
-    al_draw_scaled_bitmap(p_game->sprites.background_jogo, 0, 0, bg_w, bg_h, 0, 0, SCREEN_W, SCREEN_H, 0);
-	/*al_clear_to_color(al_map_rgb(0, 0, 0));
-	al_draw_filled_rectangle(0, SCREEN_H - FLOOR_H, 
-		                     SCREEN_W, SCREEN_H, 
-							 al_map_rgb(0, 245, 0)); */
-}
-
-void draw_score(const Game *p_game){
-	
-	al_draw_textf(p_game->font, al_map_rgb(255, 255, 255), 10, 10, ALLEGRO_ALIGN_LEFT, "Score: %d", p_game->score);
-}
-
-void draw_round(const Game *p_game){
-
-    al_draw_textf(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 10, ALLEGRO_ALIGN_CENTRE, "%dº Round", p_game->round_atual);
-}
-
-void draw_high_score(const Game *p_game){
-
-	al_draw_textf(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W - 10, 10, ALLEGRO_ALIGN_RIGHT, "Recorde: %d", p_game->high_score);
-}
-
-void draw_buffs(const Game *p_game){
-
-    float sprite_shield_w = al_get_bitmap_width(p_game->sprites.shield);
-    float sprite_shield_h = al_get_bitmap_height(p_game->sprites.shield);
-
-    float new_sprite_w = POWERUP_TIMER_W;
-	float new_sprite_h = POWERUP_TIMER_H;
-
-    float new_sprite_shield_w = NAVE_W;
-	float new_sprite_shield_h = NAVE_W * 0.55;
-
-	float draw_x = SCREEN_W - ( POWERUP_TIMER_W + 10);
-	float draw_y = SCREEN_H - 50;
-
-    float draw_shield_x = p_game->nave.x - NAVE_W / 2;
-    float draw_shield_y = (SCREEN_H - FLOOR_H) - ( new_sprite_shield_h + 25 );
-
-    if(p_game->tempo_buff_imunidade_restante > 0){
-        al_draw_scaled_bitmap(p_game->sprites.powerUp_Imunidade, 0, 0, 86, 86, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
-        al_draw_scaled_bitmap(p_game->sprites.shield, 0, 0, sprite_shield_w, sprite_shield_h, draw_shield_x, draw_shield_y, new_sprite_shield_w, new_sprite_shield_h, 0);
-    }
-
-     if (p_game->tempo_buff_velocidade_restante > 0) {
-        al_draw_scaled_bitmap(p_game->sprites.powerUp_Vel, 0, 0, 86, 86, draw_x - ( POWERUP_TIMER_W + 10), draw_y, new_sprite_w, new_sprite_h, 0);
-    }
 }
 
 // GERENCIADOR DAS MUSICAS

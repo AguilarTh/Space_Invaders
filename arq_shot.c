@@ -25,7 +25,7 @@ void draw_shots(const Game *p_game){
 			float new_sprite_w = SHOT_W;
 			float new_sprite_h = SHOT_H;
 
-			float draw_x = p_game->shots[i].x - (new_sprite_w/ 2.0);   
+			float draw_x = p_game->shots[i].x;  
     		float draw_y = p_game->shots[i].y - (new_sprite_h / 2.0);
 
 			al_draw_scaled_bitmap(p_game->sprites.shot, 0, 0, sprite_w, sprite_h, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);

@@ -24,6 +24,7 @@
 #include "arq_powerup.h"
 #include "arq_pause.h"
 #include "arq_load.h"
+#include "arq_desenhos_avulsos.h"
 
 int main(){
 
@@ -103,6 +104,9 @@ int main(){
 	// ---- ARQUIVOS EXTERNOS --------
 
 	loads(&game);
+
+	al_set_display_icon(game.display, game.sprites.icone_janela);
+	
     // FILA DE EVENTOS:
 
 	game.event_queue = al_create_event_queue();
@@ -117,7 +121,7 @@ int main(){
 	al_register_event_source(game.event_queue, al_get_keyboard_event_source()); // TECLA
 	al_register_event_source(game.event_queue, al_get_mouse_event_source()); // MOUSE
 
-	int high_score= load_highscore(); // Carregar o Recorde Salvo
+	game.high_score = load_highscore(); // Carregar o Recorde Salvo
 
 	reset_game(&game);
 	game.estado_atual = MENU;
@@ -146,8 +150,6 @@ int main(){
 				if(game.estado_atual == JOGO_ATIVO) {
                     reset_game(&game);
                 }
-
-    			al_set_audio_stream_gain(game.audio.musica_menu, 0.3); // Volume da musica = 70%
 				break;
 			
 			case JOGO_ATIVO:
@@ -163,13 +165,48 @@ int main(){
 
 			case PAUSE:
 				processa_eventos_pause(ev, &game);
-				desenha_cena_jogo(&game);	
+				desenha_cena_jogo(&game);
+				draw_pause_overlay(&game);	
 				
 				if (game.estado_atual == PAUSE){
                 	draw_pause_overlay(&game);
            		}
-			break;
+				break;
 
+			case NEW_RECORD:
+				draw_game_over_screen(&game);
+				if (ev.type == ALLEGRO_EVENT_KEY_DOWN){
+            	
+					switch (ev.keyboard.keycode) {
+                		case ALLEGRO_KEY_R:
+                    		reset_game(&game);
+                    		game.estado_atual = JOGO_ATIVO;
+                    		break;
+
+                		case ALLEGRO_KEY_ESCAPE:
+                    		game.estado_atual = MENU;
+                    		break;
+           			}
+        		}
+				break;
+
+			case GAME_OVER:
+				draw_new_record_screen(&game);
+				if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+            	
+					switch (ev.keyboard.keycode) {
+                		case ALLEGRO_KEY_R:
+                    		reset_game(&game);
+                    		game.estado_atual = JOGO_ATIVO;
+                    		break;
+
+                		case ALLEGRO_KEY_ESCAPE:
+                    		game.estado_atual = MENU;
+                    		break;
+           			}
+        		}
+				break;
+				
 			default:
 				break;
 		}
@@ -177,7 +214,7 @@ int main(){
 
 	// Verificação do HighScore
 
-	if (game.score > high_score){
+	if (game.score > game.high_score){
 		printf("NOVO RECORDE: %d\n", game.score);
 		save_highscore(game.score);
 	}

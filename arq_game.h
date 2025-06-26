@@ -16,7 +16,12 @@
 
 typedef struct {
 
-    ALLEGRO_BITMAP *nave;
+    ALLEGRO_BITMAP *nave_1;
+    ALLEGRO_BITMAP *nave_2;
+    ALLEGRO_BITMAP *nave_3;
+    ALLEGRO_BITMAP *nave_4;
+    ALLEGRO_BITMAP *nave_5;
+
     ALLEGRO_BITMAP *nave_life;
     ALLEGRO_BITMAP *shot;
     ALLEGRO_BITMAP *enemy;
@@ -29,9 +34,15 @@ typedef struct {
     ALLEGRO_BITMAP *powerUp_Imunidade;
     ALLEGRO_BITMAP *powerUp_Vel;
     ALLEGRO_BITMAP *shield;
-
+    
+    ALLEGRO_BITMAP *icone_janela;
     ALLEGRO_BITMAP *background_menu;
-    ALLEGRO_BITMAP *background_jogo;
+
+    ALLEGRO_BITMAP *background_jogo_1;
+    ALLEGRO_BITMAP *background_jogo_2;
+    ALLEGRO_BITMAP *background_jogo_3;
+    ALLEGRO_BITMAP *background_jogo_4;
+    ALLEGRO_BITMAP *background_jogo_atual;
     // ... adicione outros sprites aqui conforme for criando
 } GameSprites;
 
@@ -42,6 +53,7 @@ typedef struct {
     ALLEGRO_SAMPLE *explosao_nave;
     ALLEGRO_SAMPLE *explosao_inimigo;
     ALLEGRO_SAMPLE *explosao_objeto;
+    ALLEGRO_SAMPLE *dmg_nave;
     ALLEGRO_SAMPLE *powerup_life;
     ALLEGRO_SAMPLE *powerup_imm;
     ALLEGRO_SAMPLE *powerup_vel;
@@ -58,7 +70,9 @@ typedef struct Game {
     ALLEGRO_DISPLAY *display;
     ALLEGRO_TIMER *timer;
     ALLEGRO_EVENT_QUEUE *event_queue;
+    ALLEGRO_FONT *font_grande;
     ALLEGRO_FONT *font;
+    ALLEGRO_FONT *font_pequena;
     GameSprites sprites;
     GameAudio audio;
 
@@ -66,6 +80,7 @@ typedef struct Game {
 
     GameStates estado_atual;
     GameStates musica_ativa;
+    int type_game;
     int round_atual;
     int score;
     int high_score;

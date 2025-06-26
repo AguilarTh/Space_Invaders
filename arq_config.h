@@ -21,6 +21,8 @@ typedef enum{
     MENU,
     JOGO_ATIVO,
     PAUSE,
+    NEW_RECORD,
+    GAME_OVER,
     SAIR
 } GameStates;
 
@@ -56,7 +58,7 @@ typedef enum{
 #define UI_H 40
 
 #define NAVE_W 80
-#define NAVE_H 50
+#define NAVE_H 80
 
 #define SHOT_W 20
 #define SHOT_H 45
@@ -64,7 +66,7 @@ typedef enum{
 #define ENEMY_W 40
 #define ENEMY_H 30
 
-#define OBJECTS_NUMB 3
+#define OBJECTS_NUMB 0
 #define OBJECT_W 100
 #define OBJECT_H 100
 

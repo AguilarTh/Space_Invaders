@@ -83,6 +83,7 @@ void colisao_enemy_shot_nave(Game *p_game){
 				p_game->enemies_shots[i].active = false;
 				if(p_game->immunity == false){
 					p_game->nave.life--;
+					al_play_sample(p_game->audio.dmg_nave, 0.4, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 					printf("Nave atingida. Vidas restantes: %d", p_game->nave.life);
 				}
 		    }

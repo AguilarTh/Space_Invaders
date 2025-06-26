@@ -24,7 +24,9 @@ void draw_pause_overlay(const Game *p_game) {
     al_draw_filled_rectangle(0, 0, SCREEN_W, SCREEN_H, al_map_rgba_f(0, 0, 0, 0.5));
 
     // TEXTOS:
-    al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 - 80, ALLEGRO_ALIGN_CENTER, "PAUSADO");
-    al_draw_text(p_game->font, al_map_rgb(200, 200, 200), SCREEN_W / 2, SCREEN_H / 2 + 20, ALLEGRO_ALIGN_CENTER, "Pressione 'P' para continuar");
-    al_draw_text(p_game->font, al_map_rgb(200, 200, 200), SCREEN_W / 2, SCREEN_H / 2 + 50, ALLEGRO_ALIGN_CENTER, "Pressione 'ESC' para voltar ao Menu");
+    al_draw_text(p_game->font_grande, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 - 80, ALLEGRO_ALIGN_CENTER, "PAUSADO");
+    al_draw_text(p_game->font_pequena, al_map_rgb(200, 200, 200), SCREEN_W / 2, SCREEN_H / 2 + 120, ALLEGRO_ALIGN_CENTER, "'P' - CONTINUE");
+    al_draw_text(p_game->font_pequena, al_map_rgb(200, 200, 200), SCREEN_W / 2, SCREEN_H / 2 + 150, ALLEGRO_ALIGN_CENTER, "ESC' - BACK TO MENU");
+
+    al_flip_display();
 }
