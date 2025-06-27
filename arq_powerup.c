@@ -47,7 +47,6 @@ void tentar_dropar_buff(Game *p_game, enemy *inimigo_morto) {
                 p_game->powerups[i].y = inimigo_morto->y;
                 p_game->powerups[i].y_vel = 1.5f; // Cai lentamente
                 p_game->powerups[i].tipo = tipo_dropado;
-                // p_game->powerups[i].sprite = p_game->sprites.powerup_vida; // Exemplo para o futuro
                 break;
             }
         }
@@ -87,7 +86,7 @@ void draw_powerups(Game *p_game) {
                     break; 
                 case BUFF_VEL: 
                     p_game->powerups[i].sprite = p_game->sprites.powerUp_Vel;
-                    break; // Azul
+                    break; 
             }
             
             float sprite_w = al_get_bitmap_width(p_game->powerups[i].sprite);

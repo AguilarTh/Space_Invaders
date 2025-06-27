@@ -4,8 +4,6 @@
 
 #include <stdio.h>
 
-// TENHO Q FZR O COLISAO ENEMY_NAVE
-
 bool check_collision_retangulo(float x1, float y1, float w1, float h1,
                                 float x2, float y2, float w2, float h2){   // VERIFICADOR DE COLISÃO
 	if(x1 + w1 > x2 &&
@@ -26,6 +24,30 @@ int colisao_enemy_solo(Game *p_game){
 				return 1;
 			}
 		}
+	}
+	return 0;
+}
+
+int colisao_enemy_nave(Game *p_game){
+      
+    for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (p_game->enemies[i].active) {
+           
+        	float enemy_hitbox_x = p_game->enemies[i].x - (ENEMY_W / 2.0);
+        	float enemy_hitbox_y = p_game->enemies[i].y - (ENEMY_H / 2.0);
+
+        	// HITBOX DA NAVE:
+			float nave_hitbox_x = p_game->nave.x - NAVE_W / 2;
+        	float nave_hitbox_y = SCREEN_H - FLOOR_H / 2 - NAVE_H;
+
+        	if (check_collision_retangulo(
+            	enemy_hitbox_x, enemy_hitbox_y, ENEMY_W, ENEMY_H,
+            	nave_hitbox_x, nave_hitbox_y, NAVE_W, NAVE_H
+            	))
+        	{
+				return 1;
+        	}
+    	}		
 	}
 	return 0;
 }
@@ -123,14 +145,8 @@ void colisao_enemy_shot_object(Game *p_game){
 					){
 					
 						p_game->enemies_shots[i].active = false;
-						p_game->objects[j].life--;
+						p_game->objects[j].active = false;
 						al_play_sample(p_game->audio.explosao_objeto, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-						update_objects(p_game);
-						printf("Object atingido. Vidas restantes: %d", p_game->objects[j].life);
-
-						if(p_game->objects[j].life <= 0){
-							p_game->objects[j].active = false;
-						}
 					}
 				}
 			}

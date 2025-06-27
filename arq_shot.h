@@ -11,7 +11,6 @@ typedef struct{
 	float x, y;
 	float y_vel;
 	ALLEGRO_BITMAP *sprite;
-	// int type_shot;
 } shot;
 
 void initShot(Game *p_game);

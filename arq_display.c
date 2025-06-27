@@ -4,10 +4,6 @@
 
 #include <stdio.h>
 
-//static float g_scale; 
-//static float g_offset_x;
-//static float g_offset_y;
-
 bool init_display(Game *p_game){
     
     // !! DEFINE O MODO DE TELA CHEIA EM JANELA : !!

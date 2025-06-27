@@ -4,8 +4,6 @@
 
 #define HIGHSCORE_FILE "highscore.dat"
 
-// !!!! MELHORIA -> CRIAR UMA TELA DE GAMEOVER E COLOCAR ESSA VERIFICACAO NELA
-
 int load_highscore() {
     FILE *file = fopen(HIGHSCORE_FILE, "r"); 
     int highscore = 0;

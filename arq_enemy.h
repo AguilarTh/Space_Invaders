@@ -5,7 +5,7 @@
 #include <allegro5/allegro_primitives.h>
 #include "arq_config.h"
 
-typedef struct Game Game;  // entender melhor sobre essa declaracao antecipada -> DECLARACAO VS DEFINICAO
+typedef struct Game Game;  
 
 typedef struct{
 

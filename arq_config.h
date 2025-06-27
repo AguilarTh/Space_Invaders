@@ -66,9 +66,9 @@ typedef enum{
 #define ENEMY_W 40
 #define ENEMY_H 30
 
-#define OBJECTS_NUMB 0
-#define OBJECT_W 100
-#define OBJECT_H 100
+#define OBJECTS_NUMB 3
+#define OBJECT_W 75
+#define OBJECT_H 75
 
 #define POWERUP_W 25
 #define POWERUP_H 25

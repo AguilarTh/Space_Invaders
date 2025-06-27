@@ -26,9 +26,7 @@ typedef struct {
     ALLEGRO_BITMAP *shot;
     ALLEGRO_BITMAP *enemy;
     ALLEGRO_BITMAP *enemy_shot;
-    ALLEGRO_BITMAP *object_A;
-    ALLEGRO_BITMAP *object_B;
-    ALLEGRO_BITMAP *object_C;
+    ALLEGRO_BITMAP *object;
     ALLEGRO_BITMAP *explosao;
     ALLEGRO_BITMAP *powerUp_Life;
     ALLEGRO_BITMAP *powerUp_Imunidade;
@@ -43,7 +41,7 @@ typedef struct {
     ALLEGRO_BITMAP *background_jogo_3;
     ALLEGRO_BITMAP *background_jogo_4;
     ALLEGRO_BITMAP *background_jogo_atual;
-    // ... adicione outros sprites aqui conforme for criando
+    ALLEGRO_BITMAP *background_final;
 } GameSprites;
 
 typedef struct {
@@ -57,6 +55,8 @@ typedef struct {
     ALLEGRO_SAMPLE *powerup_life;
     ALLEGRO_SAMPLE *powerup_imm;
     ALLEGRO_SAMPLE *powerup_vel;
+    ALLEGRO_SAMPLE *game_over;
+    ALLEGRO_SAMPLE *victory;
 
     ALLEGRO_AUDIO_STREAM *musica_jogo;
     ALLEGRO_AUDIO_STREAM *musica_menu;
@@ -73,6 +73,7 @@ typedef struct Game {
     ALLEGRO_FONT *font_grande;
     ALLEGRO_FONT *font;
     ALLEGRO_FONT *font_pequena;
+    ALLEGRO_FONT *font_pequena_2;
     GameSprites sprites;
     GameAudio audio;
 

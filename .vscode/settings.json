@@ -22,6 +22,7 @@
         "arq_pause.h": "c",
         "arq_game.h": "c",
         "arq_load.h": "c",
-        "allegro_audio.h": "c"
+        "allegro_audio.h": "c",
+        "stdbool.h": "c"
     }
 }

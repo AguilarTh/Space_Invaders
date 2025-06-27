@@ -65,7 +65,7 @@ void initEnemy(Game *p_game){
 
 		p_game->enemies[i].x = (i % 5) * (ENEMY_W + 30) + 50; // o %5 cria um padrao q distribui os inimigos em 5 colunas
 	    p_game->enemies[i].y = ( i / 5) * (ENEMY_H + 30) + 80; // o /5 tambem cria um padrao q dividi em 2 linhas ( 0 e 1)
-		// o +20 é para o espaçamento entre inimigos e o +50/20 é para distanciar da margem
+		// o +30 é para o espaçamento entre inimigos e o +50/80 é para distanciar da margem
 		// se quiser q divida em "X" colunas -> %X
 	}
 }
@@ -111,7 +111,6 @@ void draw_enemy(const Game *p_game){
 	}
 }
 
-// OLHAR SE ESSE CODIGO ESTÁ OTIMIZADO -> ACHO Q NAO
 void update_enemy(Game *p_game){  // MOVIMENTAÇÃO/COLISAO/SPEED INCREASE
 
 	bool wall_tracker = false; // colisao enemy-wall
@@ -123,12 +122,12 @@ void update_enemy(Game *p_game){  // MOVIMENTAÇÃO/COLISAO/SPEED INCREASE
 	for(int i=0; i<MAX_ENEMIES; i++){
 
 		if(!p_game->enemies[i].active){
-			continue;  // qual a diferença dos dois mesmo?
+			continue; 
 		}  
 
 		if((p_game->enemies[i].x + ENEMY_W + p_game->enemies[i].x_vel > SCREEN_W) || (p_game->enemies[i].x + p_game->enemies[i].x_vel < 0)){
 			wall_tracker = true;
-			break; // uso do break apenas por EFICIENCIA, se 1 ja bateu nn precisa verificar os outros
+			break; 
 		}
 	}
 		
@@ -157,6 +156,7 @@ void update_enemy(Game *p_game){  // MOVIMENTAÇÃO/COLISAO/SPEED INCREASE
 				}
 			}
 		}
+
 		if (p_game->enemies[i].dmg_count_timer > 0) {
 
             // Se o cronômetro estiver ativo, diminui o tempo
@@ -181,9 +181,8 @@ int contar_inimigos_vivos(Game *p_game){  // RETORNA O NUM DE INIMIGOS VIVOS
 	return enemies_alive;
 }
 
-// VER SE ESSE RETORNO VISUAL MEU FOI FEITO DA MELHOR FORMA:
-
 void enemy_dmg_visuals_update(enemy *p_enemy){ // RETORNO VISUAL DO DANO 
+	
 	p_enemy->dmg_count_timer = 0.10f;
 	p_enemy->total_frames = 2;
     p_enemy->frame_atual = 0; // Reinicia a animação para o novo estado

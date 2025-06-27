@@ -9,10 +9,6 @@ void draw_scenario(const Game *p_game){
     float bg_h = al_get_bitmap_height(p_game->sprites.background_jogo_atual);
 
     al_draw_scaled_bitmap(p_game->sprites.background_jogo_atual, 0, 0, bg_w, bg_h, 0, 0, SCREEN_W, SCREEN_H, 0);
-	/*al_clear_to_color(al_map_rgb(0, 0, 0));
-	al_draw_filled_rectangle(0, SCREEN_H - FLOOR_H, 
-		                     SCREEN_W, SCREEN_H, 
-							 al_map_rgb(0, 245, 0)); */
 }
 
 void draw_score(const Game *p_game){
@@ -61,30 +57,41 @@ void draw_game_over_screen(const Game *p_game){
     
     al_clear_to_color(al_map_rgb(0, 0, 0)); 
 
+    float bg_w = al_get_bitmap_width(p_game->sprites.background_final);
+    float bg_h = al_get_bitmap_height(p_game->sprites.background_final);
+
+    al_draw_scaled_bitmap(p_game->sprites.background_final, 0, 0, bg_w, bg_h, 0, 0, SCREEN_W, SCREEN_H, 0);
+
     al_draw_text(p_game->font_grande, al_map_rgb(255, 0, 0),
-                 SCREEN_W / 2, SCREEN_H / 2 - 50, ALLEGRO_ALIGN_CENTER, "FIM DE JOGO");
+                 SCREEN_W / 2, SCREEN_H / 2 - 150, ALLEGRO_ALIGN_CENTER, "FIM DE JOGO!");
     al_draw_textf(p_game->font, al_map_rgb(255, 255, 255),
-                  SCREEN_W / 2, SCREEN_H / 2 + 20, ALLEGRO_ALIGN_CENTER, "Sua Pontuação: %d", p_game->score);
-    al_draw_textf(p_game->font, al_map_rgb(255, 255, 255),
-                  SCREEN_W / 2, SCREEN_H / 2 + 50, ALLEGRO_ALIGN_CENTER, "Recorde Atual: %d", p_game->high_score);
+                  SCREEN_W / 2, SCREEN_H / 2 + 20, ALLEGRO_ALIGN_CENTER, "Pontuação Final: %d", p_game->score);
+    al_draw_textf(p_game->font_pequena, al_map_rgb(200, 200, 200),
+                  SCREEN_W / 2, SCREEN_H / 2 + 70, ALLEGRO_ALIGN_CENTER, "Recorde Atual: %d", p_game->high_score);
     al_draw_text(p_game->font_pequena, al_map_rgb(200, 200, 200),
-                 SCREEN_W / 2, SCREEN_H / 2 + 90, ALLEGRO_ALIGN_CENTER, "Pressione 'R' para Tentar Novamente");
+                 SCREEN_W / 2, SCREEN_H / 2 + 190, ALLEGRO_ALIGN_CENTER, "Pressione 'R' para Jogar Novamente");
     al_draw_text(p_game->font_pequena, al_map_rgb(200, 200, 200),
-                 SCREEN_W / 2, SCREEN_H / 2 + 120, ALLEGRO_ALIGN_CENTER, "Pressione 'ESC' para Voltar ao Menu");
+                 SCREEN_W / 2, SCREEN_H / 2 + 220, ALLEGRO_ALIGN_CENTER, "Pressione 'ESC' para Voltar ao Menu");
 
     al_flip_display();
 }
 
 void draw_new_record_screen(const Game *p_game){
-    al_clear_to_color(al_map_rgb(0, 0, 0)); // Limpa a tela
+    al_clear_to_color(al_map_rgb(0, 0, 0)); 
+
+    float bg_w = al_get_bitmap_width(p_game->sprites.background_final);
+    float bg_h = al_get_bitmap_height(p_game->sprites.background_final);
+
+    al_draw_scaled_bitmap(p_game->sprites.background_final, 0, 0, bg_w, bg_h, 0, 0, SCREEN_W, SCREEN_H, 0);
+
     al_draw_text(p_game->font_grande, al_map_rgb(0, 255, 0),
-                 SCREEN_W / 2, SCREEN_H / 2 - 70, ALLEGRO_ALIGN_CENTER, "NOVO RECORDE!!!");
+                 SCREEN_W / 2, SCREEN_H / 2 - 100, ALLEGRO_ALIGN_CENTER, "NOVO RECORDE!");
     al_draw_textf(p_game->font, al_map_rgb(255, 255, 255),
-                  SCREEN_W / 2, SCREEN_H / 2, ALLEGRO_ALIGN_CENTER, "Sua Nova Pontuação Máxima: %d", p_game->high_score);
+                  SCREEN_W / 2, SCREEN_H / 2 + 20, ALLEGRO_ALIGN_CENTER, "Pontuação Final: %d", p_game->high_score);
     al_draw_text(p_game->font_pequena, al_map_rgb(200, 200, 200),
-                 SCREEN_W / 2, SCREEN_H / 2 + 60, ALLEGRO_ALIGN_CENTER, "Pressione 'R' para Jogar Novamente");
+                 SCREEN_W / 2, SCREEN_H / 2 + 160, ALLEGRO_ALIGN_CENTER, "Pressione 'R' para Jogar Novamente");
     al_draw_text(p_game->font_pequena, al_map_rgb(200, 200, 200),
-                 SCREEN_W / 2, SCREEN_H / 2 + 90, ALLEGRO_ALIGN_CENTER, "Pressione 'ESC' para Voltar ao Menu");
+                 SCREEN_W / 2, SCREEN_H / 2 + 190, ALLEGRO_ALIGN_CENTER, "Pressione 'ESC' para Voltar ao Menu");
     
     al_flip_display();
 }

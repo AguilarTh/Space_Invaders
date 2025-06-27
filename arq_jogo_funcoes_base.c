@@ -36,7 +36,7 @@ void processa_eventos_jogo(ALLEGRO_EVENT ev, Game *p_game){
 
                         // SAMPLE - VOLUME - BALANÇO - VELOCIDADE - MODO DE PLAY - ID DE RETORNO
                         al_play_sample(p_game->audio.tiro_nave, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-                        break; // atirar apenas 1 vez 
+                        break; 
                     }
                 }
                 break;
@@ -78,8 +78,8 @@ void atualiza_logica_jogo(Game *p_game){
     
     // FUNCOES DE UPDATE
 
-    update_nave(p_game);  // !!!!! enderer direito pq nao usar o & !!!!!!
-    update_enemy(p_game); // Nao usamos o FOR aq pois ele agora ja está presente dentre da função
+    update_nave(p_game);  
+    update_enemy(p_game); // Nao usar o FOR aq pois ele agora ja está presente dentre da função
                           // Main + limpo ( tipo um sumarios ) e ajuda na centralizacao de logica, inimigos movem como um bloco
     update_shot(p_game);
     
@@ -124,17 +124,16 @@ void atualiza_logica_jogo(Game *p_game){
     colisao_shot_enemy(p_game);
     colisao_enemy_shot_nave(p_game);
     
-
-    if(p_game->nave.life <=0 || colisao_enemy_solo(p_game)){
+    if(p_game->nave.life <=0 || colisao_enemy_solo(p_game) || colisao_enemy_nave(p_game)){
         al_play_sample(p_game->audio.explosao_nave, 0.4, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 
-        if(p_game->score < p_game->high_score){
-            p_game->estado_atual = NEW_RECORD;
+        if(p_game->score > p_game->high_score){
             save_highscore(p_game->score); 
             p_game->high_score = p_game->score; 
+            p_game->estado_atual = NEW_RECORD;
         }
         
-        else if(p_game->score >= p_game->high_score){
+        else if(p_game->score <= p_game->high_score){
             p_game->estado_atual = GAME_OVER;
         }
     }		       
@@ -194,6 +193,16 @@ void gerenciar_musicas(Game *p_game){
                 al_set_audio_stream_playing(p_game->audio.musica_jogo, true);
                 p_game->musica_ativa = JOGO_ATIVO;
             }
+            break;
+
+        case GAME_OVER:
+            al_play_sample(p_game->audio.game_over, 0.4, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+            p_game->musica_ativa = GAME_OVER;
+            break;
+
+        case NEW_RECORD:
+            al_play_sample(p_game->audio.victory, 0.2, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+            p_game->musica_ativa = NEW_RECORD;
             break;
 
         default:

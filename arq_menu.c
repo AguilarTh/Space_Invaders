@@ -15,11 +15,13 @@ void draw_menu(const Game *p_game){
     al_draw_scaled_bitmap(p_game->sprites.background_menu, 0, 0, bg_w, bg_h, 0, 0, SCREEN_W, SCREEN_H, 0);
 
     // TITULO
-    al_draw_text(p_game->font_grande, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4, ALLEGRO_ALIGN_CENTER, "Space Invaders");
+    al_draw_text(p_game->font_grande, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4 + 15, ALLEGRO_ALIGN_CENTER, "Space Invaders");
 
     // OPÇÃO
     al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 150, ALLEGRO_ALIGN_CENTER, "NOVO JOGO");
     al_draw_text(p_game->font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 190, ALLEGRO_ALIGN_CENTER, "SAIR");
+
+    al_draw_text(p_game->font_pequena_2, al_map_rgb(255, 255, 255), 10, SCREEN_H - 15, ALLEGRO_ALIGN_LEFT, "Desenvolvido por Thiago Aguilar para o TP/PDS-01/25");
 
     al_flip_display();
 }
@@ -32,7 +34,7 @@ void process_menu_events(ALLEGRO_EVENT ev, Game *p_game){
         int mouse_x = ev.mouse.x;
         int mouse_y = ev.mouse.y;
 
-        // transform_mouse_coords(p_game, &mouse_x, &mouse_y); // Tradução das coordenadas, seja la oq isso quer dizer
+        // transform_mouse_coords(p_game, &mouse_x, &mouse_y); // Tradução das coordenadas / só precisa em full screen
 
         // ---- AREAS CLICAVEIS DOS BOTOES ----
 
@@ -49,13 +51,6 @@ void process_menu_events(ALLEGRO_EVENT ev, Game *p_game){
             printf("Botao SAIR clicado!\n");
             p_game->estado_atual = SAIR;
         }
-
-        /* A: CONFIG
-        if (mouse_x > SCREEN_W / 2 - 100 && mouse_x < SCREEN_W / 2 + 100 &&
-            mouse_y > SCREEN_H / 2 + 65 && mouse_y < SCREEN_H / 2 + 95) {
-            printf("Botao CONFIGURACAO clicado!\n");
-            // *estado_atual = CONFIG; // (Implementaremos no futuro)
-        } */
     }
 }
 

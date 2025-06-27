@@ -31,10 +31,6 @@ int main(){
 	srand(time(NULL));
 	Game game;
 
-    /*ALLEGRO_DISPLAY *display = NULL;   // STRUCT -> Tela
-    ALLEGRO_EVENT_QUEUE *event_queue = NULL; // STRUCT -> Fila de Eventos
-    ALLEGRO_TIMER *timer = NULL; // STRUCT -> Timer do jogo */
-
     // -------- inicializações: ---------
 
     if(!al_init()) {  
@@ -164,16 +160,15 @@ int main(){
 				break;
 
 			case PAUSE:
-				processa_eventos_pause(ev, &game);
-				desenha_cena_jogo(&game);
-				draw_pause_overlay(&game);	
+				processa_eventos_pause(ev, &game);	
 				
 				if (game.estado_atual == PAUSE){
                 	draw_pause_overlay(&game);
            		}
 				break;
 
-			case NEW_RECORD:
+			case GAME_OVER:
+				gerenciar_musicas(&game);
 				draw_game_over_screen(&game);
 				if (ev.type == ALLEGRO_EVENT_KEY_DOWN){
             	
@@ -190,7 +185,8 @@ int main(){
         		}
 				break;
 
-			case GAME_OVER:
+			case NEW_RECORD:
+				gerenciar_musicas(&game);
 				draw_new_record_screen(&game);
 				if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             	
@@ -211,13 +207,6 @@ int main(){
 				break;
 		}
     }
-
-	// Verificação do HighScore
-
-	if (game.score > game.high_score){
-		printf("NOVO RECORDE: %d\n", game.score);
-		save_highscore(game.score);
-	}
 
     // ROTINAS DE DESTRUIÇÃO -> boa pratica
 

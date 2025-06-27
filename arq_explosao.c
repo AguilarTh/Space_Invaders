@@ -12,7 +12,7 @@ void init_explosoes(Game *p_game){
         exp->frame_time = 0.45f; // Duração de cada frame (mais baixo = mais rápido)
         exp->total_frames = 7; 
 
-        // Detalhes da Animação
+        // Detalhes da Animação  
         
         exp->frames[0] = (AnimationFrame){ .sx=12, .sy=13, .sw=22, .sh=19};
         exp->frames[1] = (AnimationFrame){ .sx=55, .sy=7, .sw=35, .sh=29};

@@ -32,7 +32,7 @@ void try_enemy_shot(Game *p_game){  // % DE DISPARO
                     p_game->enemies_shots[i].x = p_game->enemies[shooter_ind].x + ENEMY_W/2;
                     p_game->enemies_shots[i].y = p_game->enemies[shooter_ind].y + ENEMY_H;
                     p_game->enemies_shots[i].y_vel = 4; // Velocidade
-                    break; // sair apos disparar 1 tiro
+                    break; 
                 }
             }
         }
@@ -40,6 +40,7 @@ void try_enemy_shot(Game *p_game){  // % DE DISPARO
 }
 
 void draw_enemy_shot(const Game *p_game){
+
     for(int i=0; i<MAX_ENEMIES_SHOTS; i++){
         if(p_game->enemies_shots[i].active){
             float sprite_w = al_get_bitmap_width(p_game->sprites.enemy_shot);
@@ -57,6 +58,7 @@ void draw_enemy_shot(const Game *p_game){
 }
 
 void update_enemy_shot(Game *p_game){
+    
     for(int i=0; i<MAX_ENEMIES_SHOTS; i++){
         if(p_game->enemies_shots[i].active){
             p_game->enemies_shots[i].y += p_game->enemies_shots[i].y_vel;

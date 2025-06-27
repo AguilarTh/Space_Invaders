@@ -6,6 +6,7 @@
 typedef struct Game Game;
 
 int colisao_enemy_solo(Game *p_game);
+int colisao_enemy_nave(Game *p_game);
 void colisao_shot_enemy(Game *p_game);
 void colisao_enemy_shot_nave(Game *p_game);
 void colisao_shot_object(Game *p_game);

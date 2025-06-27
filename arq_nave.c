@@ -57,7 +57,6 @@ void draw_nave(const Game *p_game){
     float draw_y = (SCREEN_H - FLOOR_H) - (new_sprite_h / 2.0);  // altura
 
 	al_draw_scaled_bitmap(p_game->nave.sprite, 0, 0, sprite_w, sprite_h, draw_x, draw_y, new_sprite_w, new_sprite_h, 0);
-	// DESENHA A IMAGEM TODA -> AL_DRAW_BITMAP_REGION é q desenha so uma parte
 }
 
 void update_nave(Game *p_game){  // CONTROLE ESQ/DIR
